@@ -1,0 +1,190 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full overflow-y-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Item</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="itemForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="itemName" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="itemName" formControlName="name"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="itemForm.get('name')?.invalid && (itemForm.get('name')?.touched || itemForm.get('name')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('name')?.errors?.['required']">Name is required.</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="itemPrice" class="block">Price <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="itemPrice" formControlName="price"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="itemForm.get('price')?.invalid && (itemForm.get('price')?.touched || itemForm.get('price')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('price')?.errors?.['required']">Price is required.</small>
+            <small *ngIf="itemForm.get('price')?.errors?.['min']">Price must be greater than or equal to 0.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="itemCategory" class="block">Category <span class="text-[#FF3C3C]">*</span></label>
+          <select id="itemCategory" formControlName="category"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="">Select a category</option>
+            <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+          </select>
+          <div
+            *ngIf="itemForm.get('category')?.invalid && (itemForm.get('category')?.touched || itemForm.get('category')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('category')?.errors?.['required']">Category is required.</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="itemBranches" class="block">Branches <span class="text-[#FF3C3C]">*</span></label>
+          <div class="relative multi-selection">
+            <div
+              class="mt-1 flex items-center w-[240px] h-[40px] p-2 border-[1px] border-solid border-[#CCCCCC4D] rounded-lg cursor-pointer"
+              (click)="toggleDropdown()">
+              <span *ngIf="selectedBranches.length === 0">Select branches</span>
+              <span *ngIf="selectedBranches.length > 0">{{ selectedBranchNames }}</span>
+            </div>
+            <div *ngIf="dropdownOpen"
+              class="absolute left-0 right-0 z-10 bg-white border-[1px] border-solid border-[#CCCCCC4D] shadow-[0_0px_5px_#00000020] rounded-lg mt-1">
+              <div *ngFor="let branch of branches">
+                <label class="flex branchs-center cursor-pointer p-2 hover:bg-gray-200">
+                  <input type="checkbox" [checked]="isBranchSelected(branch)" class="mr-2 accent-[#FF3C3C]"
+                    (change)="toggleBranchSelection(branch)">
+                  {{ branch.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="itemForm.get('branches')?.invalid && (itemForm.get('branches')?.touched || itemForm.get('branches')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('branches')?.errors?.['required']">At least one branch must be selected.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="itemTax" class="block">Tax</label>
+          <select id="itemTax" formControlName="tax"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="">Select a tax</option>
+            <option *ngFor="let tax of taxes" [value]="tax.id">{{ tax.name }}</option>
+          </select>
+          <div *ngIf="itemForm.get('tax')?.invalid && (itemForm.get('tax')?.touched || itemForm.get('tax')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('tax')?.errors?.['required']">Tax is required.</small>
+          </div>
+        </div>
+
+        <div>
+          <label for="imageUrl" class="block">Image <span class="text-[#FF3C3C]">*</span></label>
+          <input type="file" id="image" (change)="onFileSelect($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label class="block">Status</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+              <input type="radio" id="active" formControlName="status" [value]="1" class="hidden">Active
+            </label>
+            <label class="radio-label w-[114px] h-[36px] cursor-pointer">
+              <input type="radio" id="nonActive" formControlName="status" [value]="0" class="hidden">Inactive
+            </label>
+          </div>
+          <div
+            *ngIf="itemForm.get('status')?.invalid && (itemForm.get('status')?.touched || itemForm.get('status')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('status')?.errors?.['required']">Status is required.</small>
+          </div>
+        </div>
+
+        <div>
+          <label class="block">Item Type</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+              <input type="radio" id="veg" formControlName="itemType" name="itemType" value="Veg" class="hidden">Veg
+            </label>
+            <label class="radio-label w-[104px] h-[36px] cursor-pointer">
+              <input type="radio" id="nonVeg" formControlName="itemType" name="itemType" value="NonVeg" class="hidden">
+              Non-Veg
+            </label>
+          </div>
+          <div
+            *ngIf="itemForm.get('itemType')?.invalid && (itemForm.get('itemType')?.touched || itemForm.get('itemType')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('itemType')?.errors?.['required']">Item Type is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label class="block">Is Featured</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label w-[87px] h-[36px] cursor-pointer">
+              <input type="radio" id="true" formControlName="isFeatured" name="isFeatured" [value]="true"
+                class="hidden">Yes
+            </label>
+            <label class="radio-label w-[87px] h-[36px] cursor-pointer">
+              <input type="radio" id="false" formControlName="isFeatured" name="isFeatured" [value]="false"
+                class="hidden">No
+            </label>
+          </div>
+          <div
+            *ngIf="itemForm.get('isFeatured')?.invalid && (itemForm.get('isFeatured')?.touched || itemForm.get('isFeatured')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('isFeatured')?.errors?.['required']">Featured status is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div class="w-full">
+          <label for="description" class="block">Description <span class="text-[#FF3C3C]">*</span></label>
+          <textarea id="description" formControlName="description"
+            class="mt-1 block w-full h-[120px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+          <div
+            *ngIf="itemForm.get('description')?.invalid && (itemForm.get('description')?.touched || itemForm.get('description')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('description')?.errors?.['required']">Description is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div class="w-full">
+          <label for="note" class="block">Note <span class="text-[#FF3C3C]">*</span></label>
+          <textarea id="note" formControlName="note"
+            class="mt-1 block w-full h-[120px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+          <div *ngIf="itemForm.get('note')?.invalid && (itemForm.get('note')?.touched || itemForm.get('note')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="itemForm.get('note')?.errors?.['required']">Note is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

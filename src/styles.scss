@@ -1,0 +1,186 @@
+/* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+
+html {
+  letter-spacing: 0.1px;
+  scroll-behavior: smooth;
+  box-sizing: border-box;
+  --color: #999;
+  --checked-color: #F45859;
+  --bg-color: #e8e8e8;
+}
+
+body {
+  background-color: #F5F5F5;
+}
+
+*,
+*:after,
+*:before {
+  box-sizing: inherit;
+}
+
+* {
+  border: 0;
+  margin: 0;
+  font-family: "Inter", sans-serif;
+}
+
+
+.custom-radio {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  border: 1px solid #F45859;
+  border-radius: 50%;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+.custom-radio::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #F45859;
+  background-color: CanvasText;
+}
+
+.custom-radio:checked::before {
+  transform: scale(0.7);
+  background-color: #F45859;
+}
+
+
+.custom-check-box {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  border: 1px solid #F45859;
+  border-radius: 1px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+.custom-check-box::before {
+  content: "\2713";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 1px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #F45859;
+  color: white;
+  background-color: CanvasText;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-check-box:checked::before {
+  transform: scale(1);
+  background-color: #F45859;
+}
+
+.tooltip-text {
+  @apply absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-2 py-1 text-xs font-semibold text-white bg-black rounded opacity-0 transition-opacity duration-300 pointer-events-none;
+}
+
+.odd-bg {
+  background-color: #F5F5F5;
+}
+
+.modal-content {
+  max-width: calc(240px + 240px + 36px + 36px + 8px);
+  width: 100%;
+
+  input[type="radio"]:checked+.radio-label {
+    background-color: #F458591F;
+    border: 1px solid #F45859;
+  }
+
+  .radio-label {
+    border: 1px solid transparent;
+    background-color: #CCCCCC4D;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    transition: background-color 0.3s ease, border 0.3s ease;
+  }
+
+  label:has(input[type="radio"]:checked) {
+    background-color: #F458591F;
+    border: 1px solid #F45859;
+  }
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: white;
+  padding: 2rem;
+  // border-radius: 8px;
+  margin-left: auto;
+}
+
+.custom-check-box {
+  -webkit-appearance: none;
+  appearance: none;
+  margin: 0;
+  border: 1px solid #F45859;
+  border-radius: 1px;
+  transform: translateY(-0.075em);
+  display: grid;
+  place-content: center;
+}
+
+.custom-check-box::before {
+  content: "\2713";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 1px;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #F45859;
+  color: white;
+  background-color: CanvasText;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-check-box:checked::before {
+  transform: scale(1);
+  background-color: #F45859;
+}
+
+input,
+select,
+option,
+textarea,
+.multi-selection {
+  color: #818181;
+}

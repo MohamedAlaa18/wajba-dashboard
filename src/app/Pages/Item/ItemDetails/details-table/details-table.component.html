@@ -1,0 +1,34 @@
+<div class="shadow-[0px_4px_16px_0px_#CCCCCC4D] py-4 mt-5 overflow-x-auto">
+  <h2 class="font-semibold px-4">{{ tableTitle }}</h2>
+
+  <table class="w-full border-collapse mt-2 text-left text-[#555457]">
+    <thead>
+      <tr class="font-medium">
+        <th *ngFor="let header of tableHeaders" class="p-4">{{ header }}</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let row of tableData let isOdd = odd" [class.odd-bg]="!isOdd">
+        <td class="p-4 border-b border-gray-200">{{ row.name }}</td>
+        <td class="p-4 border-b border-gray-200">{{ (row.additionalPrice).toFixed(2) }}</td>
+        <td *ngIf="hasStatusHeader" class="p-4 border-b border-gray-200 text-[#50AF60]" [class.text-[#FF3C3C]]='row.status === 0'>
+          {{ row.status === 1 ? 'Active' :'Inactive'}}
+        </td>
+        <td class="p-4 border-b border-gray-200 flex items-center gap-4">
+          <div class="group">
+            <button (click)="actions.edit(row)"
+              class="bg-[#D7ECFF] w-[32px] h-[32px] rounded-[4px] flex justify-center items-center">
+              <img src="assets/images/edit.svg" alt="edit">
+            </button>
+          </div>
+          <div class="group">
+            <button (click)="actions.delete(row)"
+              class="bg-[#FEEEEE] w-[32px] h-[32px] rounded-[4px] flex justify-center items-center">
+              <img src="assets/images/delete.svg" alt="delete">
+            </button>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

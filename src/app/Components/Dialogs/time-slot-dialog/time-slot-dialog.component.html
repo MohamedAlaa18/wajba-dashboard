@@ -1,0 +1,47 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Time Slot</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="timeSlotForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+      <div class="w-full flex items-center gap-4">
+        <!-- Opening Time Input -->
+        <div class="w-full">
+          <label for="openingTime" class="block">Opening Time <span class="text-[#FF3C3C]">*</span></label>
+          <input type="time" id="openingTime" formControlName="openingTime"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+
+          <!-- Validation message for Opening Time -->
+          <div *ngIf="timeSlotForm.get('openingTime')?.touched && timeSlotForm.get('openingTime')?.invalid"
+            class="text-red-500 text-sm mt-1">
+            <div *ngIf="timeSlotForm.get('openingTime')?.errors?.['required']">Opening time is required.</div>
+          </div>
+        </div>
+
+        <!-- Closing Time Input -->
+        <div class="w-full">
+          <label for="closingTime" class="block">Closing Time <span class="text-[#FF3C3C]">*</span></label>
+          <input type="time" id="closingTime" formControlName="closingTime"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+
+          <!-- Validation message for Closing Time -->
+          <div *ngIf="timeSlotForm.get('closingTime')?.touched && timeSlotForm.get('closingTime')?.invalid"
+            class="text-red-500 text-sm mt-1">
+            <div *ngIf="timeSlotForm.get('closingTime')?.errors?.['required']">Closing time is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

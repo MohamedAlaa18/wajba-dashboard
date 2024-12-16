@@ -1,0 +1,44 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Vouchers', link: '/vouchers' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<section class="p-4 bg-white" *ngIf="voucher">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">Voucher</span>
+  </div>
+
+  <div class="flex flex-wrap gap-8">
+    <div class="w-[347.42px] h-fit border-[1px] border-solid border-black rounded-xl">
+      <img [src]="voucher.imageUrl" alt="{{ voucher.name }}" class="w-full h-auto rounded-xl" />
+    </div>
+
+    <div class="flex gap-8 px-4">
+      <ol class="space-y-3 list-disc">
+        <li>Name:</li>
+        <li>Code:</li>
+        <li>Discount: </li>
+        <li>Discount Type: </li>
+        <li>Start Date:</li>
+        <li>End Date:</li>
+        <li>Minimum Order Amount:</li>
+        <li>Maximum Discount: </li>
+        <li>Limit Per User: </li>
+        <li>Description:</li>
+      </ol>
+      <div class="text-[#555457] space-y-3">
+        <p>{{ voucher.name }}</p>
+        <p>{{ voucher.code }}</p>
+        <p>{{ (voucher.discount).toFixed(2) }}</p>
+        <p>{{ voucher.discountType === 0 ? 'Percentage': 'Fixed' }}</p>
+        <p>{{ voucher.startDate }}</p>
+        <p>{{ voucher.endDate }}</p>
+        <p>{{ voucher.minimumOrderAmount }}</p>
+        <p>{{ voucher.maximumDiscount }}</p>
+        <p>{{ voucher.limitPerUser }}</p>
+        <p>{{ voucher.description }}</p>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,137 @@
+<header class="bg-white fixed top-0 right-0 w-full">
+  <div class="max-w-screen-2xl mx-auto px-4 sm:px-6 lg:px-8 xl:px-4 bg-white w-full sm:block h-24 flex items-center">
+    <div class="flex items-center justify-between bg-white">
+      <div class="flex-1 md:flex md:items-center md:gap-12">
+        <a class="block text-teal-600" href="#">
+          <span class="sr-only">Home</span>
+          <img src="assets/images/logo.png" alt="logo" class="w-24">
+        </a>
+      </div>
+
+      <div class="md:flex md:items-center md:gap-12 bg-white">
+        <nav aria-label="Global">
+          <div class="flex items-center gap-16">
+            <ul class="flex items-center gap-8">
+              <li class="relative font-medium" #branchDropdown>
+                <button class="inline-flex gap-2 items-center overflow-hidden rounded-md border bg-white"
+                  (click)="toggleBranchDropdown()">
+                  {{selectedBranch}}
+
+                  <div class="h-full text-[#F45859] transition" [ngClass]="{'rotate-180':isBranchDropdownOpen}">
+                    <span class="sr-only">Menu</span>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
+                      <path fill-rule="evenodd"
+                        d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                        clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                </button>
+
+                <div
+                  class="absolute start-0 z-10 mt-12  min-w-24 rounded-xl border-solid border-[1px] border-[#E3E3E3] bg-white shadow-lg"
+                  role="menu" [class.hidden]="!isBranchDropdownOpen">
+                  <div class="p-2" *ngIf="branches">
+                    <label *ngFor="let branch of branches"
+                      class="flex gap-2 items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-50 hover:text-gray-700">
+                      <input type="radio" name="branch" [value]="branch.name" class="accent-[#F45859]"
+                        (change)="selectBranch(branch)" [checked]="selectedBranch === branch.name">
+                      {{ branch.name}}
+                    </label>
+                  </div>
+                </div>
+              </li>
+
+              <li class="relative text-[14px] font-bold" #languageDropdown>
+                <button
+                  class="flex gap-2 items-center rounded-[8px] border-solid border-[1px] border-[#E3E3E3] h-10 px-4 text-gray-900 transition"
+                  (click)="toggleLanguageDropdown()">
+                  <span class="sr-only">Change Language</span>
+                  <img [src]="selectedLanguageImage" [alt]="selectedLanguage" class="w-4 h-4">
+                  {{ selectedLanguage | translate }}
+                </button>
+
+                <div
+                  class="absolute start-0 mt-8 z-20 w-full min-w-fit rounded-xl border border-gray-100 bg-white shadow-lg"
+                  role="menu" [class.hidden]="!isLanguageDropdownOpen">
+                  <div class="p-2" *ngIf="languages">
+                    <a *ngFor="let language of languages" href="#"
+                      class="flex gap-2 items-center rounded-lg p-2 text-base text-gray-900 hover:bg-gray-50 hover:text-gray-700"
+                      role="menuitem" (click)="changeLanguage($event, language.code, language.imageUrl, language.name)">
+                      <img [src]="language.imageUrl" [alt]="language.name" class="w-4 h-4">
+                      {{ language.name | translate }}
+                    </a>
+                  </div>
+                </div>
+              </li>
+            </ul>
+
+            <ul class="flex items-center gap-8">
+              <li class="bg-[#F458591F] px-2 w-[40px] h-[40px] flex justify-center items-center">
+                <button (click)="toggleSidebar()">
+                  <app-icon *ngIf="isSidebarOpen" iconName="burgerMenuClose" color="#03053D"></app-icon>
+                  <app-icon *ngIf="!isSidebarOpen" iconName="burgerMenuOpen" color="#1D1B20"></app-icon>
+                </button>
+              </li>
+
+              <li class="relative hidden md:block" #profileDesktopDropdown>
+                <button class="flex gap-2 items-center justify-center rounded-full transition font-medium"
+                  (click)="toggleProfileDesktopDropdown()">
+                  <div class="flex justify-center items-centerm y-8">
+                    <div class="relative flex items-center justify-center">
+                      <img src="assets/images/profile.jpeg" alt="Profile"
+                        class="w-[77.88px] h-[73.01px] rounded-full border-[1px] border-dashed border-[#F45859]">
+                      <!-- <button class="absolute bottom-0 right-0">
+                        <img src="assets/images/edit-profile-images.svg" alt="edit-profile-image">
+                      </button> -->
+                      <div class="mx-2 text-left">
+                        <p class="text-[#555457] text-[14px]">Hello</p>
+                        <p class="capitalize font-bold flex gap-4 items-center">
+                          mohamed
+                          <img src="assets/images/profile-menu-arrow.svg" alt="profile-menu-arrow">
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </button>
+
+                <div class="absolute end-0 z-20 mt-12 rounded-xl bg-white font-bold shadow-[0_4px_12px_0px_#CCCCCC80]"
+                  role="menu" [class.hidden]="!isProfileDesktopDropdownOpen">
+                  <div>
+                    <div class="flex justify-center items-center gap-2 my-8 px-4">
+                      <div class="relative w-[96px] h-[90px]">
+                        <img src="assets/images/profile.jpeg" alt="Profile"
+                          class="w-[96px] h-[90px] rounded-full border-[1px] border-dashed border-[#F45859]">
+                        <button class="absolute bottom-0 right-0">
+                          <img src="assets/images/edit-profile-image.svg" alt="edit-profile-image">
+                        </button>
+                      </div>
+                      <div>
+                        <p class="capitalize">Mohamed Alaa</p>
+                        <p class="text-sm text-gray-600 font-normal">mohamed.alaa.elhefny&#64;gmail.com</p>
+                        <p class="text-sm text-gray-600 font-normal text-center">01090528528</p>
+                      </div>
+                    </div>
+
+                    @for (item of profileMenuItems; track $index) {
+                    <a [href]="item.href"
+                      class="flex gap-2 items-center rounded-lg py-3 px-6 text-base text-gray-900 hover:text-[#F45859] transition"
+                      role="menuitem" (click)="item.icon === 'logout' ? logout() : null">
+                      <img [src]="item.src" [alt]="item.src">
+
+                      {{ item.label | translate }}
+                    </a>
+                    @if ($index != profileMenuItems.length - 1) {
+                    <hr class="w-full border-t-[1px] border-solid border-gray-300">
+                    }
+                    }
+                  </div>
+                </div>
+              </li>
+            </ul>
+          </div>
+        </nav>
+      </div>
+    </div>
+  </div>
+</header>
+<div class="h-24 bg-white"></div>

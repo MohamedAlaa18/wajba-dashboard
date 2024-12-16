@@ -1,0 +1,50 @@
+<section class="bg-white p-4">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] pb-2">
+    <span class="font-semibold text-[20px]">Time Slots</span>
+  </div>
+
+  <form (ngSubmit)="onSave()">
+    <table class="w-full border-collapse">
+      <tbody>
+        <tr *ngFor="let weekDay of weekDayTimeSlots" class="border-b-[1px] border-solid border-[#CCCCCC4D]">
+          <td class="p-6 border-r-[1px] border-solid border-[#CCCCCC4D]">{{ getWeekDayName(weekDay.weekDay) }}</td>
+          <td class="p-6 flex items-center gap-4 w-fit">
+            <div *ngFor="let slot of weekDay.timeSlots"
+              class="border-[1px] border-solid border-[#CCCCCC4D] w-fit flex gap-2 relative">
+              <div class="w-fit flex flex-col p-2 gap-2">
+                <label class="font-medium">Opening Time</label>
+                <input type="time" [(ngModel)]="slot.openingTime" name="openingTime-{{slot.id}}"
+                  class="w-full border border-[#CCCCCC4D] rounded" />
+              </div>
+              <div class="w-fit flex flex-col p-2 gap-2">
+                <label class="font-medium">Closing Time</label>
+                <input type="time" [(ngModel)]="slot.closingTime" name="closingTime-{{slot.id}}"
+                  class="w-full border border-[#CCCCCC4D] rounded" />
+              </div>
+              <button class="absolute -top-3 -right-3" (click)="deleteTimeSlot(weekDay.weekDay, slot.id)">
+                <app-icon iconName="close" color="#F45859"></app-icon>
+              </button>
+            </div>
+          </td>
+          <td class="p-2">
+            <button (click)="openModal(weekDay.weekDay)" type="button"
+              class="w-[86px] h-[28px] rounded-3xl bg-[#F45859] text-white font-bold text-[14px] flex items-center justify-center gap-2 my-auto">
+              <app-icon iconName="add" color="white"></app-icon>
+              Add
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="flex gap-4 mt-4">
+      <button type="submit"
+        class="bg-[#F45859] text-white font-bold text-[20px] px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+    </div>
+  </form>
+
+  <!-- Add Time Slot Modal -->
+  <app-time-slot-dialog *ngIf="isModalOpen" [weekDayId]="weekDayIdForModal" (close)="isModalOpen = false"
+    (saveTimeSlot)="addNewTimeSlot($event, weekDayIdForModal)">
+  </app-time-slot-dialog>
+</section>

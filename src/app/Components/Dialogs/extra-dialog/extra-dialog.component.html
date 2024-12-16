@@ -1,0 +1,48 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Extra</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="extraForm" (ngSubmit)="saveExtra()" class="flex flex-col gap-4 mt-4">
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label>Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" formControlName="name"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="extraForm.get('name')?.invalid && extraForm.get('name')?.touched" class="text-[#FF3C3C]">
+            Name is required.
+          </div>
+        </div>
+
+        <div>
+          <label>Price <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" formControlName="price"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="extraForm.get('price')?.invalid && extraForm.get('price')?.touched" class="text-[#FF3C3C]">
+            Valid price is required.
+          </div>
+        </div>
+      </div>
+
+      <label class="font-semibold">Status</label>
+      <div class="flex gap-4">
+        <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+          <input type="radio" formControlName="status" value="Active" class="hidden"> Active
+        </label>
+        <label class="radio-label w-[103] h-[36px] cursor-pointer">
+          <input type="radio" formControlName="status" value="non-active" class="hidden"> Inactive
+        </label>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

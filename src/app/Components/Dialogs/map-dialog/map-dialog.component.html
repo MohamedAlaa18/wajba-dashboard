@@ -1,0 +1,24 @@
+<div class="map-container">
+  <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+    <h2 class="text-center text-2xl font-bold mb-4">Address</h2>
+    <button (click)="closeModal()">
+      <app-icon iconName="close" color="#F45859"></app-icon>
+    </button>
+  </div>
+
+  <!-- Search Bar -->
+  <div class="search-bar mb-2 relative h-fit border-[1px] border-solid border-[#CCCCCC4D] rounded-lg">
+    <app-icon iconName="search" class="absolute left-2 top-2"></app-icon>
+    <form [formGroup]="searchForm" class="flex items-center px-2 gap-4">
+      <input type="text" formControlName="search" placeholder="Enter a Location"
+        class="w-full h-10 px-8 border border-gray-300 rounded-md outline-none" />
+      <button type="button" (click)="goToCurrentLocation()"
+        class="bg-[#F45859] text-white w-[40px] h-[32px] flex items-center justify-center rounded-md">
+        <app-icon iconName="location" color="white"></app-icon>
+      </button>
+    </form>
+  </div>
+
+  <!-- Google Map -->
+  <div id="map" class="w-[496.72px] h-[238px]"></div>
+</div>

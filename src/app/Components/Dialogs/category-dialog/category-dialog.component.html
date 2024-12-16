@@ -1,0 +1,68 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Category Details</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="categoryForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+
+      <div class="w-full">
+        <label for="categoryName" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+        <input type="text" id="categoryName" formControlName="name"
+          class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        <div
+          *ngIf="categoryForm.get('name')?.invalid && (categoryForm.get('name')?.touched || categoryForm.get('name')?.dirty)"
+          class="text-red-500 text-sm">
+          <div *ngIf="categoryForm.get('name')?.errors?.['required']">Name is required.</div>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-center w-full">
+        <div class="w-full">
+          <label for="categoryImage" class="block">Image <span class="text-[#FF3C3C]">*</span></label>
+          <input type="file" id="categoryImage" (change)="onImageSelected($event)"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="categoryForm.get('image')?.invalid && (categoryForm.get('image')?.touched || categoryForm.get('image')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="categoryForm.get('image')?.errors?.['required']">Image is required.</div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="status" class="block">Status</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label cursor-pointer">
+              <input type="radio" id="active" formControlName="status" value="active" class="hidden">Active
+            </label>
+            <label class="radio-label cursor-pointer">
+              <input type="radio" id="inactive" formControlName="status" value="inactive" class="hidden">Inactive
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-full">
+        <label for="categoryDescription" class="block">Description <span class="text-[#FF3C3C]">*</span></label>
+        <textarea id="categoryDescription" formControlName="description"
+          class="mt-1 block w-full h-[80px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        </textarea>
+        <div
+          *ngIf="categoryForm.get('description')?.invalid && (categoryForm.get('description')?.touched || categoryForm.get('description')?.dirty)"
+          class="text-red-500 text-sm">
+          <div *ngIf="categoryForm.get('description')?.errors?.['required']">Description is required.</div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

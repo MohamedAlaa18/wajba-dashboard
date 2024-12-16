@@ -1,0 +1,22 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Push Notification', link: '/notifications' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<section class="bg-white rounded-b-2xl p-8" *ngIf="notification">
+  <p class="text-[20px] font-semibold">Push Notifications</p>
+
+  <hr class="border-b-[1px] border-solid border-[#CCCCCC4D] mt-2 mb-6">
+
+  <div class="flex items-center gap-6">
+    <img [src]="notification.imageUrl" alt="notification-logo"
+      class="h-[174.57px] w-[174.57px] rounded-xl border-[1px] border-solid border-[#000000]">
+
+    <div class="text-[20px]">
+      <p class="font-semibold capitalize">{{notification.title}}</p>
+      <p class="text-[#328DE0] my-3 capitalize">{{notification.userName}}</p>
+      <p>Description : {{notification.description}}</p>
+    </div>
+  </div>
+</section>

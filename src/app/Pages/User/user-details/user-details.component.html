@@ -1,0 +1,106 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+
+<section class="flex flex-col gap-6" *ngIf="user">
+  <div class="w-full bg-white p-6 rounded-[16px] flex items-center sm:justify-start justify-center flex-wrap gap-8">
+    <img
+      [src]="!user.profilePhoto || user.profilePhoto === 'Empty'  ? 'assets/images/profile.jpeg' :  user.profilePhoto"
+      alt="profile" class="w-[143.11px] h-[147px] rounded-2xl">
+
+
+    <div class="flex flex-col gap-5">
+      <h2 class="text-[24px] font-bold">{{user.name}}</h2>
+      <p class="font-medium text-[#CC02FF] text-center sm:text-left">{{user.roleName ? user.roleName : 'Customer'}}</p>
+      <label
+        class="bg-[#F45859] hover:bg-[#d14044] transition w-[189px] h-[47px] rounded-[8px] text-white flex items-center justify-center">
+        Upload New image
+        <input type="file" id="image" (change)="onFileSelect($event)" class="hidden">
+      </label>
+    </div>
+  </div>
+  <div class="w-full min-w-fit bg-white p-6 rounded-[16px]">
+    <h2 class="text-[20px] font-semibold">Basic Information</h2>
+    <div class="border-b-[1px] border-solid border-[#CCCCCC4D] my-3"></div>
+
+    <div class="flex items-center w-2/3 flex-wrap gap-4 justify-between mb-3">
+      <p class="flex items-center gap-6 min-w-[270px]">
+        <span class="min-w-[135px]">Email</span>
+        <span class="text-[#555457]">
+          {{user.email}}
+        </span>
+      </p>
+      <p class="flex items-center gap-6 min-w-[270px]">
+        <span class="min-w-[135px]">Phone</span>
+        <span class="text-[#555457]">
+          {{user.phoneNumber}}
+        </span>
+      </p>
+    </div>
+    <p class="flex items-center gap-6 min-w-[270px]">
+      <span class="min-w-[135px]">Status</span>
+      <span class="text-[#50AF60]" [class.text-[#FF3C3C]]=' user.status === 0'>
+        {{ user.status === 1? 'Active' :'Inactive'}}
+      </span>
+    </p>
+  </div>
+  <div class="min-w-[456px] bg-white p-6 rounded-[16px]">
+    <div class="w-full flex justify-between items-center">
+      <h2 class="text-[20px] font-semibold">Address</h2>
+      <button (click)="openModal('add',null)"
+        class="w-[178px] h-[38px] rounded-[8px] bg-[#F45859] hover:bg-[#d14044] text-white flex items-center justify-evenly">
+        <img src="assets/images/address.svg" alt="address">
+        Add Address
+      </button>
+    </div>
+    <div class="border-b-[1px] border-solid border-[#CCCCCC4D] my-3"></div>
+
+    <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm shadow-[0px_4px_4px_0px_#CCCCCC4D] rounded-lg">
+      <thead class="ltr:text-left rtl:text-right">
+        <tr>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Label</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Address</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Apartment</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let address of user.addresses || []; let isOdd = odd" [class.odd-bg]="!isOdd">
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ address.addressLabel }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ address.street }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ address.apartmentNumber }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+            <!-- Edit Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">Edit</span>
+              </div>
+              <button (click)="openModal('edit',address)"
+                class="bg-[#D7ECFF] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/edit.svg" alt="edit">
+              </button>
+            </div>
+
+            <!-- Delete Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">Delete</span>
+              </div>
+              <button (click)="openConfirmDeleteModal(address.id)"
+                class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/delete.svg" alt="delete">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<app-address-dialog [employeeId]="userId" [address]="selectedAddress" *ngIf="isModalOpen"
+  (close)="isModalOpen = false"></app-address-dialog>
+
+<app-confirm-delete-dialog *ngIf="isConfirmDeleteModalOpen" [id]="addressToDeleteId" [name]="'item'"
+  (confirmDelete)="user.roleName ? deleteAddress() : deleteCustomerAddress()"
+  (cancelDelete)="isConfirmDeleteModalOpen = false">
+</app-confirm-delete-dialog>

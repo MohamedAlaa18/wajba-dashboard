@@ -1,0 +1,15 @@
+<nav aria-label="breadcrumb" class="mb-4">
+  <ul class="flex space-x-2 text-gray-600">
+    <li *ngFor="let breadcrumb of breadcrumbs; let last = last; let i = index" class="flex items-center">
+      <ng-container *ngIf="!last">
+        <a [routerLink]="breadcrumb.link" class="hover:underline" (click)="handleBreadcrumbClick(breadcrumb.name, i)">
+          {{ breadcrumb.name }}
+        </a>
+        <span class="mx-2 text-gray-400">/</span>
+      </ng-container>
+      <ng-container *ngIf="last">
+        <span class="text-gray-500">{{ breadcrumb.name }}</span>
+      </ng-container>
+    </li>
+  </ul>
+</nav>

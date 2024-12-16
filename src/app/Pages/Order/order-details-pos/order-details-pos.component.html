@@ -1,0 +1,122 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Pos Order', link: '/posOrders' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<section>
+  <div class="flex flex-wrap items-center justify-between gap-4 bg-white rounded-xl shadow-[0px_4px_16px_0px_#CCCCCC66] p-6"
+    *ngIf="order">
+    <div class="flex justify-center gap-8">
+      <div class="flex flex-col gap-2">
+        <p class="font-medium text-[20px]">Order ID: #{{ order.id }}</p>
+        <p>{{ order.orderDate | date: 'hh:mm a, dd-MM-yyyy' }}</p>
+        <p><span class="#555457">Payment Type:</span> 
+          {{ order.paymentMethod === 1 ? 'Cash' : order.paymentMethod === 2?'Credit Card': 'Paypal' }}
+        </p>
+        <p><span class="#555457">Order Type:</span> 
+          {{ order.orderType === 2 ? 'Drive thru' : order.orderType === 3 ? 'Dine in' : order.orderType === 4 ? 'Pick
+          up': order.orderType === 5 ?'POS': 'Delivery' }}
+        </p>
+        <p><span class="#555457">Preparing Time:</span> {{order.orderDate}}</p>
+      </div>
+      <div class="flex items-center gap-4 mb-auto">
+        <p class="text-[#50AF60]">{{ order.status === 5 ? 'Paid' : 'Pending' }}</p>
+      </div>
+    </div>
+    <div class="flex justify-center items-end flex-wrap gap-4 mt-auto">
+      <div>
+        <button (click)="togglePaidMenu()"
+          class="flex items-center justify-evenly border-[1px] border-solid border-[#F45859] rounded-[8px] w-[112px] h-[42px] text-[#F45859] font-bold text-[20px]">
+          {{ order.status === 5 ? 'Paid' : 'Unpaid' }}
+          <app-icon iconName="arrowDown"></app-icon>
+        </button>
+        <div class="relative">
+          <div *ngIf="isPaidMenuOpen"
+            class="absolute right-0 mt-2 w-[112px] bg-white border-[1px] border-solid border-[#F45859] rounded-lg z-20">
+            <button
+              class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">Paid</button>
+            <button
+              class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">Unpaid</button>
+          </div>
+        </div>
+      </div>
+      <div class="border-[1px] border-solid border-[#F45859] rounded-lg">
+        <button (click)="toggleAcceptMenu()"
+          class="flex items-center justify-evenly rounded-[8px] w-[155px] h-[42px] text-[#F45859] font-bold text-[20px]">
+          Accept
+          <app-icon iconName="arrowDown"></app-icon>
+        </button>
+        <div class="relative">
+          <div *ngIf="isAcceptMenuOpen"
+            class="absolute right-0 mt-2 w-[155px] bg-white border-[1px] border-solid border-[#F45859] rounded-lg z-20">
+            <button
+              class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">Accepted</button>
+            <button
+              class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">Delivered</button>
+            <button
+              class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">Processing</button>
+          </div>
+        </div>
+      </div>
+      <button
+        class="flex items-center justify-center gap-3 bg-[#F45859] hover:bg-[#d14044] rounded-[8px] w-[158px] h-[42px] text-white font-bold text-[20px]">
+        <img src="assets/images/print-white.svg" alt="print-white"> print
+      </button>
+    </div>
+  </div>
+
+  <div class="flex sm:flex-nowrap flex-wrap justify-center gap-6 my-6 w-full">
+    <div class="flex flex-col items-center gap-6 w-[490px] sm:w-full" *ngIf="order && order.items">
+      <div class="bg-white rounded-lg py-6 w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6">Order Details</p>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+
+        <!-- Order Items -->
+        <div *ngFor="let item of order.items let i = index;">
+          <div class="flex items-center gap-3 px-6">
+            <div class="relative w-fit">
+              <img [src]="item.imgurl" alt="item.image" class="rounded-xl w-[80px]">
+              <p
+                class="flex items-center justify-center w-[28px] h-[28px] bg-black border-[2px] border-solid border-white text-white rounded-full absolute bottom-1 -left-3">
+                {{ item.quantity }}</p>
+            </div>
+            <div class="text-[14px] leading-relaxed">
+              <p class="font-bold">{{ item.itemName }}</p>
+              <p class="text-[#F45859]">{{ item.category || 'Category' }}</p>
+              <p class="font-bold">QAR {{ item.totalPrice | number: '1.2-2' }}</p>
+            </div>
+          </div>
+          <hr *ngIf="i != order.items.length -1" class="border-b-[1px] border-solid border-[#cccccc7f] my-2" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Note Section -->
+    <div class="flex flex-col items-center gap-6 w-full">
+      <div class="bg-white rounded-lg py-6 w-[490px] sm:w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6">Note</p>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+        <p class="text-[#616161] text-[20px] px-6">Accusantium ea non reiciendis nisi. Qui aperiam dolores ipsam
+          pariatur aperiam omnis est.</p>
+      </div>
+
+      <!-- Order Summary -->
+      <div class="bg-white rounded-lg py-6 leading-loose w-[490px] sm:w-full h-fit" *ngIf="order">
+        <p class="text-[#616161] text-[20px] px-6 flex justify-between">
+          <span>Subtotal</span>
+          <span>QAR {{ order.totalAmount | number: '1.2-2' }}</span>
+        </p>
+        <p class="text-[#616161] text-[20px] px-6 flex justify-between">
+          <span>Discount</span>
+          <span>QAR {{ order.discount | number: '1.2-2' }}</span>
+        </p>
+        <hr class="border-b-[1px] border-dashed border-[#C7C7C7] my-2" />
+        <p class="text-[#616161] text-[20px] font-bold px-6 flex justify-between">
+          <span>Total</span>
+          <span>QAR {{ order.totalAmount - order.discount | number: '1.2-2' }}</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>

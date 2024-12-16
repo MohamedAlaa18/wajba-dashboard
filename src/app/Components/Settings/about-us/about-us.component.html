@@ -1,0 +1,48 @@
+<div class="bg-white p-4">
+  <div class="flex items-center justify-between w-full">
+    <h2 class="text-2xl font-bold mb-4">FAQs</h2>
+    <button type="button" class="bg-[#F45859] text-white px-4 py-2 rounded-[24px] flex items-center gap-2"
+      (click)="addQuestion()" aria-label="Add Question">
+      Add Question
+      <app-icon iconName="add" color="white"></app-icon>
+    </button>
+  </div>
+
+  <hr class="border-b-[1px] border-solid border-[#CCCCCC4D] my-3">
+
+  <form [formGroup]="questionAnswerForm" (ngSubmit)="onSave()">
+    <div formArrayName="questions">
+      <div *ngFor="let questionGroup of questions.controls; let i = index" [formGroupName]="i"
+        class="question-group mb-4">
+
+        <!-- Question Input -->
+        <label for="question-{{i}}">Question</label>
+        <input id="question-{{i}}" formControlName="question" placeholder=""
+          class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+          type="text" />
+        <div *ngIf="questionGroup.get('question')?.invalid && questionGroup.get('question')?.touched"
+          class="text-red-500 text-sm">This field is required.</div>
+
+        <!-- Answer Input -->
+        <label for="answer-{{i}}">Answer</label>
+        <textarea id="answer-{{i}}" formControlName="answer" placeholder=""
+          class="mt-1 block w-full h-[70px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+        <div *ngIf="questionGroup.get('answer')?.invalid && questionGroup.get('answer')?.touched"
+          class="text-red-500 text-sm">This field is required.</div>
+
+        <!-- Remove Button -->
+        <button type="button" class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center"
+          (click)="removeQuestion(i)" *ngIf="questions.length > 1" aria-label="Remove Question">
+          <app-icon iconName="delete" color="#F45859"></app-icon>
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <button type="submit"
+      class="bg-[#F45859] text-white text-[20px] font-bold px-4 py-2 w-[177px] h-[48px] rounded-[24px]">
+      Save
+    </button>
+  </form>
+</div>

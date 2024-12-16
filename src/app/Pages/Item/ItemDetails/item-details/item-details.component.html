@@ -1,0 +1,146 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Items', link: '/items' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<!-- Navigation Buttons -->
+<section class="overflow-x-auto">
+  <div class="flex justify-around w-full">
+    <button (click)="setActiveSection('information')" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'information'}">Information</button>
+    <button (click)="setActiveSection('image')" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'image'}">Image</button>
+    <button (click)="setActiveSection('variation')" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'variation'}">Variation</button>
+    <button (click)="setActiveSection('extra')" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'extra'}">Extra</button>
+    <button (click)="setActiveSection('addons')" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'addons'}">Add-on</button>
+  </div>
+
+  <div class="border-[1px] border-solid border-[#F45859] bg-white">
+    <!-- Information Section -->
+    <div *ngIf="activeSection === 'information' && item" class="section p-5 mb-5">
+      <div class="info flex flex-col gap-4">
+        <div class="flex items-center flex-wrap gap-4 w-2/3 justify-between">
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]">Name</span>
+            <span class="text-[#555457]">
+              {{ item.name }}
+            </span>
+          </p>
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]">Price</span>
+            <span class="text-[#555457]">
+              {{ (item.price).toFixed(2) }}
+            </span>
+          </p>
+        </div>
+        <div class="flex items-center flex-wrap gap-4 w-2/3 justify-between">
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]">Category</span>
+            <span class="text-[#555457]">
+              {{ item.categoryName }}
+            </span>
+          </p>
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]"> Tax</span>
+            <span class="text-[#555457]">
+              {{ item.taxValue }}
+            </span>
+          </p>
+        </div>
+        <div class="flex items-center flex-wrap gap-4 w-2/3 justify-between">
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]">Type</span>
+            <span class="text-[#555457]">
+              {{ item.itemType }}
+            </span>
+          </p>
+          <p class="flex items-center gap-6 min-w-[270px]">
+            <span class="min-w-[135px]">Featured</span>
+            <span class="text-[#555457]">
+              {{ item.isFeatured ? 'Featured' :'Non-Featured'}}
+            </span>
+          </p>
+        </div>
+        <p class="flex items-center gap-6">
+          <span class="min-w-[135px]">Status</span>
+          <span class="text-[#50AF60]" [class.text-[#FF3C3C]]='!item.isActive'>
+            {{ item.isActive ? 'Active' :'Inactive'}}
+          </span>
+        </p>
+        <p class="flex items-center gap-6">
+          <span class="min-w-[135px]">Description</span>
+          <span class="text-[#555457]">
+            {{ item.description }}
+          </span>
+        </p>
+        <p class="flex items-center gap-6">
+          <span class="min-w-[135px]">Caution</span>
+          <span class="text-[#555457]">
+            {{ item.note }}
+          </span>
+        </p>
+      </div>
+    </div>
+
+    <!-- Image Section -->
+    <div *ngIf="activeSection === 'image'" class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <div class="flex flex-wrap items-center gap-4">
+        <img [src]="item.imageUrl" alt="Item Image" class="w-[212.92px] h-[205.68px] rounded-[16px]">
+        <label
+          class="bg-[#F45859] hover:bg-[#d14044] transition w-[184px] h-[47px] rounded-[8px] text-white flex items-center justify-center">
+          Update Image
+          <input type="file" id="image" (change)="onFileSelect($event)" class="hidden">
+        </label>
+      </div>
+    </div>
+
+    <!-- Variation Section -->
+    <div *ngIf="activeSection === 'variation'" class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <button (click)="openVariationModal()"
+        class="bg-[#F45859] hover:bg-[#d14044] transition w-[184px] h-[47px] rounded-[8px] text-white">
+        Add Variation
+      </button>
+      <!-- Table to Display Variations -->
+      <app-details-table [tableTitle]="'Pasta'" [tableHeaders]="['Name', 'Additional Price', 'Status', 'Actions']"
+        [tableData]="variations" [actions]="{ edit: editVariation.bind(this), delete: deleteVariation.bind(this) }">
+      </app-details-table>
+    </div>
+
+    <!-- Extra Section -->
+    <div *ngIf="activeSection === 'extra'" class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <button (click)="openExtraModal()"
+        class="bg-[#F45859] hover:bg-[#d14044] transition w-[184px] h-[47px] rounded-[8px] text-white">
+        Add Extra
+      </button>
+      <!-- Table to Display Extras -->
+      <app-details-table [tableHeaders]="['Name', 'Additional Price', 'Status', 'Actions']" [tableData]="extras"
+        [actions]="{ edit: editExtra.bind(this), delete: deleteExtra.bind(this) }">
+      </app-details-table>
+    </div>
+
+    <!-- Addons Section -->
+    <div *ngIf="activeSection === 'addons'" class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <button (click)="openAddonsModal()"
+        class="bg-[#F45859] hover:bg-[#d14044] transition w-[184px] h-[47px] rounded-[8px] text-white">
+        Add on
+      </button>
+      <!-- Table to Display Addons -->
+      <app-details-table [tableHeaders]="['Name', 'Additional Price', 'Actions']" [tableData]="addons"
+        [actions]="{ edit: editAddon.bind(this), delete: deleteAddon.bind(this) }">
+      </app-details-table>
+    </div>
+  </div>
+
+</section>
+<app-variation-dialog *ngIf="showVariationModal" (close)="showVariationModal = false" [variation]="selectedVariation">
+</app-variation-dialog>
+
+<app-extra-dialog *ngIf="showExtraModal" (close)="showExtraModal = false" [extra]="selectedExtra">
+</app-extra-dialog>
+
+<app-addons-dialog *ngIf="showAddonsModal" (close)="showAddonsModal = false" [addon]="selectedAddon">
+</app-addons-dialog>

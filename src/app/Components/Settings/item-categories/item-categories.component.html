@@ -1,0 +1,60 @@
+<section class="flex justify-center w-full h-full">
+  <div class="overflow-x-auto w-full">
+    <div
+      class="flex justify-between items-center w-full rounded-t-[16px] bg-white px-4 py-3 border-b-[1px] border-solid border-[#CCCCCC]">
+      <span class="font-semibold text-[20px]">{{ label }}</span>
+      <div class="flex justify-center items-center gap-4">
+        <button (click)="openModal('add', null)"
+          class="flex items-center justify-evenly bg-[#F45859] hover:bg-[#d14044] rounded-[8px] w-[238px] h-[48px] text-white font-bold text-[20px]">
+          <img src="assets/images/add-item.svg" alt="add-item"> Add Item Category
+        </button>
+      </div>
+    </div>
+
+    <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <thead class="text-left">
+        <tr>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Name</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Status</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let category of categories; let isOdd = odd" [class.odd-bg]="!isOdd">
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ category.name }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#50AF60]" [class.text-[#FF3C3C]]='category.status === 0'>{{ category.status === 1 ? 'Active' : 'Inactive' }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+            <button (click)="openModal('edit', category)"
+              class="bg-[#D7ECFF] w-[32px] h-[32px] flex justify-center items-center">
+              <img src="assets/images/edit.svg" alt="edit">
+            </button>
+
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">View</span>
+              </div>
+              <button (click)="openItemDetails(category)"
+                class="bg-[#E4FFE9] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/view.svg" alt="view">
+              </button>
+            </div>
+
+            <button (click)="openConfirmDeleteModal(category.id)"
+              class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center">
+              <img src="assets/images/delete.svg" alt="delete">
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <app-category-dialog *ngIf="isModalOpen" (close)="isModalOpen = false"
+      [category]="selectedCategory"></app-category-dialog>
+  </div>
+</section>
+
+<app-confirm-delete-dialog *ngIf="isConfirmDeleteModalOpen" [id]="categoryToDeleteId" [name]="'category'"
+  (confirmDelete)="deleteCategory()" (cancelDelete)="isConfirmDeleteModalOpen = false">
+</app-confirm-delete-dialog>

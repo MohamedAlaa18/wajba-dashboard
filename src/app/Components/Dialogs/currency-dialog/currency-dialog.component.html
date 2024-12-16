@@ -1,0 +1,91 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Currency</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="currencyForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+
+      <div class="flex gap-8 items-center w-full">
+        <div class="w-full">
+          <label for="currencyName" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="currencyName" formControlName="name"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="currencyForm.get('name')?.invalid && (currencyForm.get('name')?.touched || currencyForm.get('name')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="currencyForm.get('name')?.errors?.['required']">Name is required.</div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="currencySymbol" class="block">Symbol <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="currencySymbol" formControlName="symbol"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="currencyForm.get('symbol')?.invalid && (currencyForm.get('symbol')?.touched || currencyForm.get('symbol')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="currencyForm.get('symbol')?.errors?.['required']">Symbol is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-center w-full">
+        <div class="w-full">
+          <label for="currencyCode" class="block">Code <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="currencyCode" formControlName="code"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="currencyForm.get('code')?.invalid && (currencyForm.get('code')?.touched || currencyForm.get('code')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="currencyForm.get('code')?.errors?.['required']">Code is required.</div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="exchangeRate" class="block">Exchange Rate</label>
+          <input type="number" id="exchangeRate" formControlName="exchangeRate"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="currencyForm.get('exchangeRate')?.invalid && (currencyForm.get('exchangeRate')?.touched || currencyForm.get('exchangeRate')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="currencyForm.get('exchangeRate')?.errors?.['required']">Exchange Rate is required.</div>
+            <div *ngIf="currencyForm.get('exchangeRate')?.errors?.['min']">Exchange Rate must be greater than or equal
+              to 0.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-8 items-center w-full">
+        <div class="w-full">
+          <div class="w-full">
+            <label for="status" class="block">Is Crypto Currency <span class="text-[#FF3C3C]">*</span></label>
+            <div class="flex items-center gap-4 mt-1">
+              <label class="radio-label cursor-pointer w-20">
+                <input type="radio" id="yes" formControlName="isCryptoCurrency" value="yes" class="hidden">Yes
+              </label>
+              <label class="radio-label cursor-pointer w-20">
+                <input type="radio" id="no" formControlName="isCryptoCurrency" value="no" class="hidden">No
+              </label>
+            </div>
+          </div>
+          <div
+            *ngIf="currencyForm.get('isCryptoCurrency')?.invalid && (currencyForm.get('isCryptoCurrency')?.touched || currencyForm.get('isCryptoCurrency')?.dirty)"
+            class="text-red-500 text-sm">
+            <div *ngIf="currencyForm.get('isCryptoCurrency')?.errors?.['required']">Selection is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,56 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">User Details</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="tableForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="userName" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="userName" formControlName="name"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="tableForm.get('name')?.invalid && tableForm.get('name')?.touched" class="text-[#FF3C3C]">
+            Name is required.
+          </div>
+        </div>
+
+        <div>
+          <label for="size" class="block">Size <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="size" formControlName="size"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="tableForm.get('size')?.invalid && tableForm.get('size')?.touched" class="text-[#FF3C3C]">
+            Size is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label class="block">Status</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+              <input type="radio" id="active" formControlName="status" [value]="true" class="hidden">Active
+            </label>
+            <label class="radio-label w-[124px] h-[36px] cursor-pointer">
+              <input type="radio" id="nonActive" formControlName="status" [value]="false" class="hidden">Inactive
+            </label>
+          </div>
+          <div *ngIf="tableForm.get('status')?.invalid && tableForm.get('status')?.touched" class="text-[#FF3C3C]">
+            Status is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

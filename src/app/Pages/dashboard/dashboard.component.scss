@@ -1,0 +1,8 @@
+.custom-date-input {
+  background: url('../../../../public/assets/images/date-picker.svg') no-repeat right 10px center;
+  background-size: 24px 24px;
+}
+
+.custom-date-input::-webkit-calendar-picker-indicator {
+  opacity: 0;
+}

@@ -1,0 +1,59 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Settings', link: '/settings' },
+  { name: 'Branches', link: '/settings' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<div class="overflow-x-auto w-full bg-white rounded-b-2xl h-fit p-6">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">Branches</span>
+  </div>
+
+  <div class="flex gap-6 items-center w-full">
+    <div class="text-[20px] leading-loose">
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Name</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.name}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Latitude</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.latitude}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Longitude</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.longitude}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Email</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.email}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Phone</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.phone}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">City</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.city}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">State</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.state}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Zip code</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.zipCode}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex">
+        <span class="w-[200px]">Address</span>
+        <span class="font-light text-[#818181]">{{selectedBranch.address}}</span>
+      </p>
+      <p class="font-medium capitalize w-full flex items-center">
+        <span class="w-[200px]">Status</span>
+        <span class="font-light bg-[#8CFE9E4F] text-[#50AF60] h-[25px] px-2 flex items-center justify-center"
+          [class.text-[#FF3C3C]]='!selectedBranch.status' [class.bg-[#FF3C3C4F]]='!selectedBranch.status'>
+          {{selectedBranch.status == 1 ? "Active" :"non-Active"}}</span>
+      </p>
+    </div>
+  </div>
+</div>

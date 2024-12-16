@@ -1,0 +1,101 @@
+<section class="bg-white p-4">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">Email</span>
+  </div>
+
+  <div class="company-form-container">
+    <form [formGroup]="emailForm" (ngSubmit)="submitForm()" class="space-y-4">
+
+      <!-- Existing Fields Here -->
+
+      <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+        <div>
+          <label for="mailHost">Mail Host <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailHost" formControlName="mailHost" type="text"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailHost')?.invalid && emailForm.get('mailHost')?.touched" class="text-[#FF3C3C]">
+            Mail Host is required.
+          </div>
+        </div>
+
+        <div>
+          <label for="mailPort">Mail Port <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailPort" formControlName="mailPort" type="text"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailPort')?.invalid && emailForm.get('mailPort')?.touched" class="text-[#FF3C3C]">
+            Mail Port is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+        <div>
+          <label for="mailUsername">Mail Username <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailUsername" formControlName="mailUsername" type="text"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailUsername')?.invalid && emailForm.get('mailUsername')?.touched"
+            class="text-[#FF3C3C]">
+            Mail Username is required.
+          </div>
+        </div>
+
+        <div>
+          <label for="mailPassword">Mail Password <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailPassword" formControlName="mailPassword" type="password"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailPassword')?.invalid && emailForm.get('mailPassword')?.touched"
+            class="text-[#FF3C3C]">
+            Mail Password is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+        <div>
+          <label for="mailFromName">Mail From Name <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailFromName" formControlName="mailFromName" type="text"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailFromName')?.invalid && emailForm.get('mailFromName')?.touched"
+            class="text-[#FF3C3C]">
+            Mail From Name is required.
+          </div>
+        </div>
+
+        <div>
+          <label for="mailFromEmail">Mail From Email <span class="text-[#FF3C3C]">*</span></label>
+          <input id="mailFromEmail" formControlName="mailFromEmail" type="email"
+            class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none" />
+          <div *ngIf="emailForm.get('mailFromEmail')?.invalid && emailForm.get('mailFromEmail')?.touched"
+            class="text-[#FF3C3C]">
+            <div *ngIf="emailForm.get('mailFromEmail')?.errors?.['required']">Mail From Email is required.</div>
+            <div *ngIf="emailForm.get('mailFromEmail')?.errors?.['email']">Invalid email format.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+        <div>
+          <label for="mailEncryption">Mail Encryption <span class="text-[#FF3C3C]">*</span></label>
+          <div class="flex items-center gap-4 mt-1">
+            <label class="radio-label w-[75px] h-[36px] cursor-pointer">
+              <input type="radio" formControlName="mailEncryption" value="SSI" class="hidden" />
+              SSI
+            </label>
+            <label class="radio-label w-[75px] h-[36px] cursor-pointer">
+              <input type="radio" formControlName="mailEncryption" value="TLS" class="hidden" />
+              TLS
+            </label>
+          </div>
+          <div *ngIf="emailForm.get('mailEncryption')?.invalid && emailForm.get('mailEncryption')?.touched"
+            class="text-[#FF3C3C]">
+            Mail Encryption is required.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex gap-4 mt-4">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+      </div>
+    </form>
+  </div>
+</section>

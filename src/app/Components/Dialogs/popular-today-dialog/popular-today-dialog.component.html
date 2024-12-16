@@ -1,0 +1,95 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Popular Item Today</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="popularForm" (ngSubmit)="saveExtra()" class="flex flex-col gap-4 mt-4">
+      <!-- Item Selection -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label>Item <span class="text-[#FF3C3C]">*</span></label>
+          <select formControlName="item"
+            class="mt-1 block w-[240px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+            (change)="onSelect($event)">
+            <option *ngFor="let item of items" [value]="item.id">{{ item.name }}</option>
+          </select>
+          <div *ngIf="popularForm.get('item')?.invalid && popularForm.get('item')?.touched" class="text-[#FF3C3C]">
+            Item is required.
+          </div>
+        </div>
+
+        <div>
+          <label>Image <span class="text-[#FF3C3C]">*</span></label>
+          <input type="file" (change)="onFileSelected($event)"
+            class="mt-1 block w-[240px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="popularForm.get('image')?.invalid && popularForm.get('image')?.touched" class="text-[#FF3C3C]">
+            Image is required.
+          </div>
+        </div>
+      </div>
+
+      <!-- Price Fields -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label>Previous Price <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" formControlName="prePrice"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="popularForm.get('prePrice')?.invalid && popularForm.get('prePrice')?.touched"
+            class="text-[#FF3C3C]">
+            Valid previous price is required.
+          </div>
+        </div>
+
+        <div>
+          <label>Current Price <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" formControlName="currentPrice"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="popularForm.get('currentPrice')?.invalid && popularForm.get('currentPrice')?.touched"
+            class="text-[#FF3C3C]">
+            Valid current price is required.
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label class="block">Status</label>
+        <div class="flex items-center gap-4">
+          <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+            <input type="radio" id="active" formControlName="status" [value]="1" class="hidden">Active
+          </label>
+          <label class="radio-label w-[114px] h-[36px] cursor-pointer">
+            <input type="radio" id="nonActive" formControlName="status" [value]="0" class="hidden">Inactive
+          </label>
+        </div>
+        <div
+          *ngIf="popularForm.get('status')?.invalid && (popularForm.get('status')?.touched || popularForm.get('status')?.dirty)"
+          class="text-red-600">
+          <small *ngIf="popularForm.get('status')?.errors?.['required']">Status is required.</small>
+        </div>
+      </div>
+
+      <!-- Description -->
+      <div>
+        <label>Description <span class="text-[#FF3C3C]">*</span></label>
+        <textarea formControlName="description" rows="3"
+          class="mt-1 block w-full px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+        <div *ngIf="popularForm.get('description')?.invalid && popularForm.get('description')?.touched"
+          class="text-[#FF3C3C]">
+          Description is required.
+        </div>
+      </div>
+
+
+      <!-- Save Button -->
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

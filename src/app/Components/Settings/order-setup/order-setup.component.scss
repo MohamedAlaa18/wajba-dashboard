@@ -1,0 +1,22 @@
+input[type="radio"]:checked+.radio-label {
+  background-color: #F458591F;
+  border: 1px solid #F45859;
+}
+
+.radio-label {
+  border: 1px solid transparent;
+  background-color: #CCCCCC4D;
+  border-radius: 8px;
+  cursor: pointer;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  transition: background-color 0.3s ease, border 0.3s ease;
+}
+
+label:has(input[type="radio"]:checked) {
+  background-color: #F458591F;
+  border: 1px solid #F45859;
+}

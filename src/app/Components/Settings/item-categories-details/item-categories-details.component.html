@@ -1,0 +1,15 @@
+<div class="overflow-x-auto w-full bg-white rounded-b-2xl h-fit p-6">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">Item Category</span>
+  </div>
+
+  <div class="flex gap-6 items-center w-full">
+    <img [src]="[selectedCategory.imageUrl]" alt="item-details" class="w-[174.57px] h-[174.57px] rounded-xl">
+
+    <div class="text-[20px] leading-loose">
+      <p class="font-semibold capitalize">{{selectedCategory.name}}</p>
+      <p>{{selectedCategory.status == 1 ? "Active" : "non-Active"}}</p>
+      <p>Description : {{selectedCategory.description}}</p>
+    </div>
+  </div>
+</div>

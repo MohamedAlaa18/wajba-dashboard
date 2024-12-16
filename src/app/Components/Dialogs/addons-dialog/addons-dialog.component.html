@@ -1,0 +1,49 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Addons</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="addonForm" (ngSubmit)="saveAddon()" class="flex flex-col gap-4 mt-4"
+      *ngIf="addonDropdown.length">
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label>Addons items</label>
+          <select formControlName="option"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+            (change)="onAddonSelectionChange($event)">
+            <option *ngFor="let item of addonDropdown" [value]="item.itemId">{{ item.itemName }}</option>
+          </select>
+          <div
+            *ngIf="addonForm.get('option')?.invalid && (addonForm.get('option')?.touched || addonForm.get('option')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="addonForm.get('option')?.errors?.['required']">Name is required.</small>
+          </div>
+        </div>
+
+        <div *ngIf="variationsAddonDropdown.length">
+          <label>Quantity choice</label>
+          <select formControlName="variation" (change)="onVariationSelectionChange($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option *ngFor="let variation of variationsAddonDropdown" [value]="variation.variationId">
+              {{ variation.variationName }}
+            </option>
+          </select>
+          <div
+            *ngIf="addonForm.get('variation')?.invalid && (addonForm.get('variation')?.touched || addonForm.get('variation')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="addonForm.get('variation')?.errors?.['required']">Name is required.</small>
+          </div>
+        </div>
+      </div>
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

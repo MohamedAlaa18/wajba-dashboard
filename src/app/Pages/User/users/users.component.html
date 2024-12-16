@@ -1,0 +1,175 @@
+<app-breadcrumb [breadcrumbs]="breadcrumbs"></app-breadcrumb>
+
+<section class="flex justify-center w-full h-fit bg-white">
+  <div class="overflow-x-auto w-full">
+    <div
+      class="flex justify-between items-center gap-4 min-w-[743px] rounded-t-[16px] px-4 py-3 border-b-[1px] border-solid border-[#CCCCCC]">
+      <span class="font-semibold text-[20px]">{{userTypeLabel}}</span>
+
+      <div class="flex justify-center items-center gap-4">
+        <!-- Filter Button -->
+        <button (click)="toggleFilterVisibility()"
+          class="flex items-center justify-evenly border-[1px] border-solid border-[#F45859] rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+          <img src="assets/images/filter.svg" alt="filter">
+          Filter
+          <app-icon iconName="arrowDown"></app-icon>
+        </button>
+
+        <!-- Export Button -->
+        <!-- Export Button with Dropdown Menu -->
+        <div class="border-[1px] border-solid border-[#F45859] rounded-lg">
+          <button (click)="toggleMenu()"
+            class="flex items-center justify-evenly rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+            <img src="assets/images/export.svg" alt="export">
+            Export
+            <app-icon iconName="arrowDown"></app-icon>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="relative">
+            <div *ngIf="isMenuOpen"
+              class="absolute right-0 mt-2 w-[154px] border-[1px] border-solid border-[#F45859] bg-white rounded-lg z-20">
+              <button (click)="exportXLS()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/xls.svg" alt="xls">
+                XLS
+              </button>
+              <button (click)="print()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/print.svg" alt="print">
+                Print
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Item Button -->
+        <button (click)="openModal('add',null)"
+          class="flex items-center justify-evenly gap-3 bg-[#F45859] hover:bg-[#d14044] rounded-[8px] px-3 h-[48px] text-white font-bold text-[20px] whitespace-nowrap">
+          <img src="assets/images/add-item.svg" alt="add-item"> Add {{userTypeLabel}}
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Form (Accordion) -->
+    <div *ngIf="isFilterVisible" class="transition-all duration-300 ease-in-out">
+      <form (ngSubmit)="applyFilters()" class="p-4 bg-white border-t-[1px] border-[#CCCCCC]">
+        <div class="flex items-center flex-wrap gap-3">
+          <!-- Name Input -->
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="name" [(ngModel)]="filters.name" name="name"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          </div>
+
+          <!-- email Input -->
+          <div class="mb-4">
+            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+            <input type="email" id="email" [(ngModel)]="filters.email" name="email"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          </div>
+
+          <!-- Phone number Input -->
+          <div class="mb-4">
+            <label for="phone" class="block text-sm font-medium text-gray-700">Phone</label>
+            <input type="tel" id="phone" [(ngModel)]="filters.phone" name="phone"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          </div>
+
+          <!-- Role Selection -->
+          <div class="mb-4" *ngIf="userTypeLabel == 'Employee'">
+            <label for="role" class="block text-sm font-medium text-gray-700">Role</label>
+            <select id="role" [(ngModel)]="filters.role" name="role"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+              <option disabled [value]='undefined'>--</option>
+              <option *ngFor="let role of roles" [value]="role.id">{{ role.name }}</option>
+            </select>
+          </div>
+
+          <!-- Status Selection -->
+          <div class="mb-4">
+            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+            <select id="status" [(ngModel)]="filters.status" name="status"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+              <option disabled [value]='undefined'>--</option>
+              <option *ngFor="let status of statuses" [value]="status.id">{{ status.name }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-3 text-[20px] font-bold">
+          <!-- Apply Filter Button -->
+          <button type="submit"
+            class="mt-2 bg-[#F45859] text-white font-bold py-2 px-4 rounded-md hover:bg-[#d14044] w-[144px] h-[48px]">
+            Search
+          </button>
+          <button (click)="clearFilters()" type="button"
+            class="mt-2 text-[#F45859] bg-white border-[1px] border-solid border-[#F45859] font-bold py-2 px-4 rounded-md w-[144px] h-[48px]">
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <!-- The rest of your table content goes here -->
+    <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <!-- <thead class="ltr:text-left rtl:text-right"> -->
+      <thead class="text-left">
+        <tr>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Name</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Email</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Phone</th>
+          <th *ngIf="userTypeLabel === 'Employee'" class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Role
+          </th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Status</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let user of users || []; let isOdd = odd" [class.odd-bg]="!isOdd">
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ user.name }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ user.email }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ user.phoneNumber }}</td>
+          <td *ngIf="userTypeLabel === 'Employee'" class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ user.roleName
+            }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2"
+            [ngClass]="{ 'text-[#50AF60]': user.status === 1, 'text-[#FF3C3C]': user.status === 0 }">
+            {{ user.status === 1 ? 'Active' : 'Inactive' }}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+            <!-- View Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">View</span>
+              </div>
+              <button [routerLink]="['/user', user.id]"
+                class="bg-[#E4FFE9] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/view.svg" alt="view">
+              </button>
+            </div>
+
+            <!-- Edit Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">Edit</span>
+              </div>
+              <button (click)="openModal('edit', user)"
+                class="bg-[#D7ECFF] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/edit.svg" alt="edit">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<app-pagination [pageNumber]="currentPage" [totalPages]="totalPages"
+  (pageChange)="onPageChange($event)"></app-pagination>
+
+<app-user-dialog *ngIf="isModalOpen" (close)="isModalOpen = false" [user]="selectedUser"
+  [IsEmployee]="userTypeLabel === 'Employee'" [IsCustomer]="userTypeLabel === 'Customer'"
+  [userType]="userType"></app-user-dialog>

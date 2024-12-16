@@ -1,0 +1,101 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Notification Details</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="notificationForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+
+      <!-- Role Selection -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="role" class="block">Role <span class="text-[#FF3C3C]">*</span></label>
+          <select id="role" formControlName="role" (change)="onRoleSelected($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option *ngFor="let role of roles" [value]="role.id">{{ role.name}}</option>
+          </select>
+          <div
+            *ngIf="notificationForm.get('role')?.invalid && (notificationForm.get('role')?.touched || notificationForm.get('role')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="notificationForm.get('role')?.errors?.['required']">Role is required.</small>
+          </div>
+        </div>
+
+        <!-- User Selection -->
+        <div>
+          <label for="user" class="block">User <span class="text-[#FF3C3C]">*</span></label>
+          <select id="user" formControlName="user"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option *ngFor="let user of users" [value]="user.id">{{ user.name }}</option>
+          </select>
+          <div
+            *ngIf="notificationForm.get('user')?.invalid && (notificationForm.get('user')?.touched || notificationForm.get('user')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="notificationForm.get('user')?.errors?.['required']">User is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Name Input -->
+      <div class="w-full">
+        <label for="name" class="block">Title <span class="text-[#FF3C3C]">*</span></label>
+        <input type="text" id="name" formControlName="name"
+          class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        <div
+          *ngIf="notificationForm.get('name')?.invalid && (notificationForm.get('name')?.touched || notificationForm.get('name')?.dirty)"
+          class="text-red-600">
+          <small *ngIf="notificationForm.get('name')?.errors?.['required']">Title is required.</small>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <!-- Date Input -->
+        <div>
+          <label for="date" class="block">Date <span class="text-[#FF3C3C]">*</span></label>
+          <input type="date" id="date" formControlName="date"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="notificationForm.get('date')?.invalid && (notificationForm.get('date')?.touched || notificationForm.get('date')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="notificationForm.get('date')?.errors?.['required']">Date is required.</small>
+          </div>
+        </div>
+
+        <!-- Image URL Input -->
+        <div>
+          <label for="imageUrl" class="block">Image <span class="text-[#FF3C3C]">*</span></label>
+          <input formControlName="imageUrl" type="file" id="image" (change)="onFileSelected($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="notificationForm.get('imageUrl')?.invalid && (notificationForm.get('imageUrl')?.touched || notificationForm.get('imageUrl')?.dirty)"
+            class="text-red-600">
+            <small *ngIf="notificationForm.get('imageUrl')?.errors?.['required']">mage is required.</small>
+          </div>
+        </div>
+      </div>
+
+      <!-- Description Input -->
+      <div class="w-full">
+        <label for="description" class="block">Description <span class="text-[#FF3C3C]">*</span></label>
+        <textarea id="description" formControlName="description"
+          class="mt-1 block w-full h-[100px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+        <div
+          *ngIf="notificationForm.get('Description')?.invalid && (notificationForm.get('Description')?.touched || notificationForm.get('Description')?.dirty)"
+          class="text-red-600">
+          <small *ngIf="notificationForm.get('Description')?.errors?.['required']">Description is required.</small>
+        </div>
+      </div>
+
+      <!-- Buttons -->
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

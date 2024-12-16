@@ -1,0 +1,47 @@
+<div class="modal-overlay" (click)="closeModal()">
+    <div class="modal-content h-full" (click)="$event.stopPropagation()">
+        <div
+            class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <h2 class="text-center text-2xl font-bold mb-4">Send Massage / Mail</h2>
+            <button (click)="closeModal()">
+                <app-icon iconName="close" color="#F45859"></app-icon>
+            </button>
+        </div>
+
+        <form [formGroup]="subscriberForm" (ngSubmit)="submitForm()"
+            class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+            <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+                <div>
+                    <label class="block">Send to<span class="text-[#FF3C3C]">*</span></label>
+                    <div class="flex items-center gap-4">
+                        <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+                            <input type="radio" id="phone" formControlName="sendTo" Categories="phone" class="hidden">Phone
+                        </label>
+                        <label class="radio-label w-[79px] h-[36px] cursor-pointer">
+                            <input type="radio" id="mail" formControlName="sendTo" Categories="mail" class="hidden">Mail
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="w-full">
+                <label for="subject" class="block">Subject/Title <span class="text-[#FF3C3C]">*</span></label>
+                <input type="text" id="subject" formControlName="subject"
+                    class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            </div>
+
+            <div class="w-full">
+                <label for="message" class="block">Message <span class="text-[#FF3C3C]">*</span></label>
+                <textarea id="message" formControlName="message" rows="3"
+                    class="mt-1 block w-full h-[91px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+            </div>
+
+            <div class="flex items-center gap-4 mt-4 font-bold w-full">
+                <button type="submit"
+                    class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+                <button (click)="closeModal()" type="button"
+                    class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+            </div>
+        </form>
+    </div>
+</div>

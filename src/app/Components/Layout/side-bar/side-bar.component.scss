@@ -1,0 +1,32 @@
+.active-link {
+  background-color: #F458591F;
+  color: #F45859;
+  /* Text and icon color when active */
+}
+
+.inactive-link {
+  color: #818181;
+  /* Default inactive color */
+}
+
+.overflow-y-auto {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+  max-height: calc(100dvh - 96px);
+}
+
+.sidebar {
+  position: fixed;
+  left: 0;
+  top: 96px;
+  height: 100%;
+  // width: 312px;
+  transition: transform 0.3s ease;
+  transform: translateX(0);
+  z-index: 1;
+}
+
+.sidebar.closed {
+  transform: translateX(-100%);
+  width: 0;
+}

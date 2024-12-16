@@ -1,0 +1,77 @@
+<section class="bg-white rounded-2xl flex gap-4 p-4 h-full">
+  <div>
+    <h3 class="text-[24px] font-semibold">Messages</h3>
+
+    <div class="relative w-[287px] h-[48px] my-8">
+      <label for="Search" class="sr-only">Search</label>
+      <input type="text" id="Search" placeholder="Search"
+        class="w-full rounded-lg py-2.5 ps-10 shadow-sm sm:text-sm border-[1px] border-solid border-[#CCCCCC] outline-none bg-[#F3F3F3]" />
+      <span class="absolute inset-y-0 -top-1.5 start-0 grid w-10 place-content-center">
+        <button type="button" class="text-gray-600 hover:text-gray-700">
+          <span class="sr-only">Search</span>
+          <div style="scale:0.7;">
+            <app-icon iconName="search" color="#555457"></app-icon>
+          </div>
+        </button>
+      </span>
+    </div>
+
+    <div class="px-4 flex flex-col gap-4">
+      <div *ngFor="let profile of profiles; let i = index" (click)="selectProfile(i)"
+        [ngClass]="{'bg-[#F458591F]': selectedProfile === i}"
+        class="flex items-center gap-3 cursor-pointer p-2 rounded-lg">
+        <img [src]="profile.imageUrl" alt="profile" class="w-[76.35px] h-[62.85px] rounded-lg">
+        <div class="text-[#818181] font-semibold">
+          <p [ngClass]="{'text-[#F45859]': selectedProfile === i}">{{ profile.name }}</p>
+          <p>{{ profile.phone }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="border-r-[1px] border-solid border-[#CCCCCC] h-full">
+
+  <div class="w-full p-4">
+    <div class="px-4 border-b-[1px] border-solid border-[#CCCCCC] mb-8 pb-4">
+      <div class="flex items-center gap-4 cursor-pointer">
+        <img [src]="profiles[selectedProfile].imageUrl" alt="profile" class="w-[76.35px] h-[62.85px] rounded-lg">
+        <div class="text-[#818181] font-semibold">
+          <p>{{ profiles[selectedProfile].name }}</p>
+          <p>{{ profiles[selectedProfile].phone }}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="h-[668px]">
+      <div *ngFor="let message of messages" [ngClass]="{'ml-auto': message.isSender, 'mr-auto': !message.isSender}"
+        [style.width]="message.isSender ? '248px' : '287px'">
+        <p [ngClass]="{'bg-[#F45859] text-white': message.isSender, 'border-[1px] border-solid border-[#CCCCCC80] text-[#616161]': !message.isSender}"
+          class="text-[14px] rounded-lg px-4 py-2">
+          {{ message.text }}
+        </p>
+        <p class="text-[#818181] text-[12px]" [ngClass]="{'text-right': message.isSender}">{{ message.time }}</p>
+      </div>
+    </div>
+
+    <div class="relative w-full h-[48px] my-8">
+      <label for="Massage" class="sr-only">Message</label>
+      <input type="text" id="Massage" placeholder="Write a message..."
+        class="w-full rounded-lg py-2.5 px-12 shadow-sm sm:text-sm border-[1px] border-solid border-[#CCCCCC] outline-none" />
+
+      <input type="file" id="uploadImage" hidden (change)="onImageUpload($event)">
+      <span class="absolute inset-y-0 -top-1.5 start-1 grid w-10 place-content-center">
+        <button type="button"
+          class="text-gray-600 hover:text-gray-700 border-r-[1px] border-solid border-[#B3B3B380] px-1"
+          (click)="triggerImageUpload()">
+          <app-icon iconName="camera" color="#F45859"></app-icon>
+        </button>
+      </span>
+
+      <span class="absolute inset-y-0 -top-1.5 end-2 grid w-10 place-content-center">
+        <button type="button" class="text-gray-600 hover:text-gray-700 px-1">
+          <app-icon iconName="send" color="#F45859"></app-icon>
+        </button>
+      </span>
+    </div>
+  </div>
+</section>

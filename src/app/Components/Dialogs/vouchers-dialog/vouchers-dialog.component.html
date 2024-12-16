@@ -1,0 +1,159 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full overflow-y-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Vouchers</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="voucherForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="name" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="name" formControlName="name"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('name')?.invalid && (voucherForm.get('name')?.touched || voucherForm.get('name')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('name')?.errors?.['required']">Name is required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="code" class="block">Code <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="code" formControlName="code"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('code')?.invalid && (voucherForm.get('code')?.touched || voucherForm.get('code')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('code')?.errors?.['required']">Code is required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="discountType" class="block">Discount Type <span class="text-[#FF3C3C]">*</span></label>
+          <select id="discountType" formControlName="discountType"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="" disabled>--</option>
+            <option value="0">Fixed</option>
+            <option value="1">Percentage</option>
+          </select>
+          <div
+            *ngIf="voucherForm.get('discountType')?.invalid && (voucherForm.get('discountType')?.touched || voucherForm.get('discountType')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('discountType')?.errors?.['required']">Discount Type is
+              required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="discount" class="block">Discount <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="discount" formControlName="discount"
+            [placeholder]="voucherForm.get('discountType')?.value === '1' ? '%' : ''"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('discount')?.invalid && (voucherForm.get('discount')?.touched || voucherForm.get('discount')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('discount')?.errors?.['required']">Discount is required.</ng-container>
+            <ng-container *ngIf="voucherForm.get('discount')?.errors?.['min']">Discount must be a positive
+              number.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="image" class="block">Image</label>
+          <input type="file" id="image" (change)="onFileSelected($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('image')?.invalid && (voucherForm.get('image')?.touched || voucherForm.get('image')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('image')?.errors?.['required']">Image is required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="limitPerUser" class="block">Limit Per User <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="limitPerUser" formControlName="limitPerUser"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('limitPerUser')?.invalid && (voucherForm.get('limitPerUser')?.touched || voucherForm.get('limitPerUser')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('limitPerUser')?.errors?.['required']">Limit Per User is
+              required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="startDate" class="block">Start Date <span class="text-[#FF3C3C]">*</span></label>
+          <input type="date" id="startDate" formControlName="startDate"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('startDate')?.invalid && (voucherForm.get('startDate')?.touched || voucherForm.get('startDate')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('startDate')?.errors?.['required']">Start Date is
+              required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="endDate" class="block">End Date <span class="text-[#FF3C3C]">*</span></label>
+          <input type="date" id="endDate" formControlName="endDate"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('endDate')?.invalid && (voucherForm.get('endDate')?.touched || voucherForm.get('endDate')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('endDate')?.errors?.['required']">End Date is required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label for="minDiscount" class="block">Min Amount <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="minDiscount" formControlName="minDiscount"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('minDiscount')?.invalid && (voucherForm.get('minDiscount')?.touched || voucherForm.get('minDiscount')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('minDiscount')?.errors?.['required']">Min Amount is
+              required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="maxDiscount" class="block">Max Amount <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="maxDiscount" formControlName="maxDiscount"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="voucherForm.get('maxDiscount')?.invalid && (voucherForm.get('maxDiscount')?.touched || voucherForm.get('maxDiscount')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="voucherForm.get('maxDiscount')?.errors?.['required']">Max Amount is
+              required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div class="w-full">
+          <label for="description" class="block">Description</label>
+          <textarea id="description" formControlName="description" rows="3"
+            class="mt-1 block w-full h-[100px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

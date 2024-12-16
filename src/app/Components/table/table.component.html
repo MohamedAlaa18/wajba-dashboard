@@ -1,0 +1,17 @@
+<!-- src/app/components/shared/table/table.component.html -->
+<table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+  <thead class="text-left">
+    <tr>
+      <th *ngFor="let header of headers" class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">
+        {{ header }}
+      </th>
+    </tr>
+  </thead>
+  <tbody class="divide-y divide-gray-200">
+    <tr *ngFor="let row of rows; let isOdd = odd" [class.odd-bg]="!isOdd">
+      <td *ngFor="let cell of row" class="whitespace-nowrap px-4 py-5 text-[#555457]">
+        {{ cell }}
+      </td>
+    </tr>
+  </tbody>
+</table>

@@ -1,0 +1,200 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-full overflow-y-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Offers</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="offerForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+
+      <!-- Name field -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <label for="name" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+        <input type="text" id="name" formControlName="name"
+          class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        <div *ngIf="offerForm.get('name')?.invalid && (offerForm.get('name')?.touched || offerForm.get('name')?.dirty)"
+          class="text-red-500">
+          <ng-container *ngIf="offerForm.get('name')?.errors?.['required']">Name is required.</ng-container>
+        </div>
+      </div>
+
+      <!-- Discount Type Dropdown -->
+      <div class="flex items-center justify-between gap-2 w-full">
+        <div>
+          <label for="discountType" class="block">Discount Type <span class="text-[#FF3C3C]">*</span></label>
+          <select id="discountType" formControlName="discountType"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="" disabled>--</option>
+            <option value="0">Fixed</option>
+            <option value="1">Percentage</option>
+          </select>
+          <div
+            *ngIf="offerForm.get('discountType')?.invalid && (offerForm.get('discountType')?.touched || offerForm.get('discountType')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('discountType')?.errors?.['required']">Discount Type is
+              required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="discount" class="block">Discount <span class="text-[#FF3C3C]">*</span></label>
+          <input type="number" id="discount" formControlName="discount"
+            [placeholder]="offerForm.get('discountType')?.value === '1' ? '%' : ''"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="offerForm.get('discount')?.invalid && (offerForm.get('discount')?.touched || offerForm.get('discount')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('discount')?.errors?.['required']">Discount is required.</ng-container>
+            <ng-container *ngIf="offerForm.get('discount')?.errors?.['min']">Discount must be a positive
+              number.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Discount On: Items or Categories -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div>
+          <label class="block">Discount On <span class="text-[#FF3C3C]">*</span></label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label w-[68px] h-[36px] cursor-pointer">
+              <input type="radio" formControlName="discountOn" value="items" class="hidden">Items
+            </label>
+            <label class="radio-label w-[104px] h-[36px] cursor-pointer">
+              <input type="radio" formControlName="discountOn" value="categories" class="hidden">Categories
+            </label>
+          </div>
+          <div
+            *ngIf="offerForm.get('discountOn')?.invalid && (offerForm.get('discountOn')?.touched || offerForm.get('discountOn')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('discountOn')?.errors?.['required']">
+              Discount On is required.
+            </ng-container>
+          </div>
+        </div>
+
+        <!-- Image Upload -->
+        <div>
+          <label for="image" class="block">Image</label>
+          <input type="file" id="image" (change)="onFileSelected($event)"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="offerForm.get('image')?.invalid && (offerForm.get('image')?.touched || offerForm.get('image')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('image')?.errors?.['required']">Image is required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Conditional Multiple Selection based on Discount On -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div *ngIf="offerForm.get('discountOn')?.value === 'items'" class="w-full">
+          <label for="selectedItems" class="block">Choose Items</label>
+          <div class="relative">
+            <div
+              class="mt-1 flex items-center w-full h-[40px] p-2 border-[1px] border-solid border-[#CCCCCC4D] rounded-lg cursor-pointer"
+              (click)="toggleItemsDropdown()">
+              <span *ngIf="selectedItems.length === 0">Select items</span>
+              <span *ngIf="selectedItems.length > 0">{{ selectedItemNames }}</span>
+            </div>
+
+            <div *ngIf="itemsDropdownOpen"
+              class="absolute left-0 right-0 z-10 bg-white border-[1px] border-solid border-[#CCCCCC4D] shadow-[0_0px_5px_#00000020] rounded-lg mt-1">
+              <div *ngFor="let item of items">
+                <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200">
+                  <input type="checkbox" [checked]="isItemSelected(item)" class="mr-2 accent-[#FF3C3C]"
+                    (change)="toggleItemSelection(item)">
+                  {{ item.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="offerForm.get('selectedItems')?.invalid && (offerForm.get('selectedItems')?.touched || offerForm.get('selectedItems')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('selectedItems')?.errors?.['required']">Items is required.</ng-container>
+          </div>
+        </div>
+
+        <div *ngIf="offerForm.get('discountOn')?.value === 'categories'" class="w-full">
+          <label for="selectedCategories" class="block">Choose Categories</label>
+          <div class="relative">
+            <div
+              class="mt-1 flex items-center w-full h-[40px] p-2 border-[1px] border-solid border-[#CCCCCC4D] rounded-lg cursor-pointer"
+              (click)="toggleCategoriesDropdown()">
+              <span *ngIf="selectedCategories.length === 0">Select categories...</span>
+              <span *ngIf="selectedCategories.length > 0">{{ selectedCategoryNames }}</span>
+            </div>
+
+            <div *ngIf="categoriesDropdownOpen"
+              class="absolute left-0 right-0 z-10 bg-white border-[1px] border-solid border-[#CCCCCC4D] shadow-[0_0px_5px_#00000020] rounded-lg mt-1">
+              <div *ngFor="let category of categories">
+                <label class="flex items-center cursor-pointer p-2 hover:bg-gray-200">
+                  <input type="checkbox" [checked]="isCategorySelected(category)" class="mr-2 accent-[#FF3C3C]"
+                    (change)="toggleCategorySelection(category)">
+                  {{ category.name }}
+                </label>
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="offerForm.get('selectedCategories')?.invalid && (offerForm.get('selectedCategories')?.touched || offerForm.get('selectedCategories')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('selectedCategories')?.errors?.['required']"
+              class="text-[#FF3C3C]">Categories is required.</ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Start Date and End Date -->
+      <div class="flex items-center justify-between gap-2 w-full">
+        <div>
+          <label for="startDate" class="block">Start Date <span class="text-[#FF3C3C]">*</span></label>
+          <input type="date" id="startDate" formControlName="startDate"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="offerForm.get('startDate')?.invalid && (offerForm.get('startDate')?.touched || offerForm.get('startDate')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('startDate')?.errors?.['required']">Start Date is
+              required.</ng-container>
+          </div>
+        </div>
+
+        <div>
+          <label for="endDate" class="block">End Date <span class="text-[#FF3C3C]">*</span></label>
+          <input type="date" id="endDate" formControlName="endDate"
+            class="mt-1 block w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div
+            *ngIf="offerForm.get('endDate')?.invalid && (offerForm.get('endDate')?.touched || offerForm.get('endDate')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('endDate')?.errors?.['required']">End Date is required.</ng-container>
+          </div>
+        </div>
+      </div>
+      <!-- Description -->
+      <div class="flex items-center justify-between flex-wrap gap-2 w-full">
+        <div class="w-full">
+          <label for="description" class="block">Description</label>
+          <textarea id="description" formControlName="description"
+            class="mt-1 block w-full h-[100px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+          <div
+            *ngIf="offerForm.get('description')?.invalid && (offerForm.get('description')?.touched || offerForm.get('description')?.dirty)"
+            class="text-red-500">
+            <ng-container *ngIf="offerForm.get('description')?.errors?.['required']">
+              Description is required.
+            </ng-container>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit and Cancel Buttons -->
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>

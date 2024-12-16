@@ -1,0 +1,144 @@
+<div class="modal-overlay" (click)="closeModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <div class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+      <h2 class="text-center text-2xl font-bold mb-4">Branch Details</h2>
+      <button (click)="closeModal()">
+        <app-icon iconName="close" color="#F45859"></app-icon>
+      </button>
+    </div>
+
+    <form [formGroup]="branchForm" (ngSubmit)="submitForm()"
+      class="space-y-4 flex items-center justify-center flex-wrap gap-2 mt-4">
+      <div class="flex items-center gap-4 w-full flex-wrap md:flex-nowrap">
+        <div class="w-full">
+          <label for="branchName" class="block">Name <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="branchName" formControlName="name"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('name')?.touched && branchForm.get('name')?.invalid" class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('name')?.errors?.['required']">Name is required.</div>
+          </div>
+        </div>
+
+        <div class="relative w-full">
+          <label for="branchLongitude" class="block">Latitude/Longitude</label>
+          <div class="flex items-center">
+            <div class="w-full">
+              <input type="text" id="branchLongitude" formControlName="longitude"
+                class="mt-1 block w-full md:w-[96px] h-[40px] px-3 py-2 rounded-l-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            </div>
+            <div class="w-full">
+              <input type="text" id="branchLatitude" formControlName="latitude"
+                class="mt-1 block w-full md:w-[144px] h-[40px] px-3 py-2 rounded-r-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            </div>
+          </div>
+          <button type="button" (click)="openMapModal()"
+            class="bg-[#FEEEEE] W-[48px] h-[30px] px-2.5 py-1 rounded-[4px] absolute right-[0.5rem] top-[50%]">
+            <app-icon iconName="map" color="#F45859"></app-icon>
+          </button>
+          <div
+            *ngIf="branchForm.get('longitude')?.touched && branchForm.get('longitude')?.invalid || branchForm.get('latitude')?.touched && branchForm.get('latitude')?.invalid"
+            class="text-red-500 text-sm">
+            <div
+              *ngIf="branchForm.get('longitude')?.errors?.['required'] || branchForm.get('latitude')?.errors?.['required']">
+              Longitude and Latitude are required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 w-full flex-wrap md:flex-nowrap">
+        <div class="w-full">
+          <label for="branchEmail" class="block">Email <span class="text-[#FF3C3C]">*</span></label>
+          <input type="email" id="branchEmail" formControlName="email"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('email')?.touched && branchForm.get('email')?.invalid"
+            class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('email')?.errors?.['required']">Email is required.</div>
+            <div *ngIf="branchForm.get('email')?.errors?.['email']">Please enter a valid email.</div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="branchCity" class="block">City <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="branchCity" formControlName="city"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('city')?.touched && branchForm.get('city')?.invalid" class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('city')?.errors?.['required']">City is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 w-full flex-wrap md:flex-nowrap">
+        <div class="w-full">
+          <label for="branchState" class="block">State <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="branchState" formControlName="state"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('state')?.touched && branchForm.get('state')?.invalid"
+            class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('state')?.errors?.['required']">State is required.</div>
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="branchPhone" class="block">Phone <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="branchPhone" formControlName="phone"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('phone')?.touched && branchForm.get('phone')?.invalid"
+            class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('phone')?.errors?.['required']">Phone number is required.</div>
+            <!-- <div *ngIf="branchForm.get('phone')?.errors?.['pattern']">Please enter a valid 10-digit phone number.</div> -->
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 w-full flex-wrap md:flex-nowrap">
+        <div class="w-full">
+          <label for="branchZipCode" class="block">Zip Code <span class="text-[#FF3C3C]">*</span></label>
+          <input type="text" id="branchZipCode" formControlName="zipCode"
+            class="mt-1 block w-full md:w-[240px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <div *ngIf="branchForm.get('zipCode')?.touched && branchForm.get('zipCode')?.invalid"
+            class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('zipCode')?.errors?.['required']">Zip code is required.</div>
+            <!-- <div *ngIf="branchForm.get('zipCode')?.errors?.['pattern']">Please enter a valid 5-digit zip code.</div> -->
+          </div>
+        </div>
+
+        <div class="w-full">
+          <label for="status" class="block">Status</label>
+          <div class="flex items-center gap-4">
+            <label class="radio-label cursor-pointer">
+              <input type="radio" id="active" formControlName="status" value="active" class="hidden">Active
+            </label>
+            <label class="radio-label cursor-pointer">
+              <input type="radio" id="inactive" formControlName="status" value="inactive" class="hidden">Inactive
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 w-full">
+        <div class="w-full">
+          <label for="branchAddress" class="block">Address <span class="text-[#FF3C3C]">*</span></label>
+          <textarea id="branchAddress" formControlName="address"
+            class="mt-1 block w-full h-[80px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"></textarea>
+          <div *ngIf="branchForm.get('address')?.touched && branchForm.get('address')?.invalid"
+            class="text-red-500 text-sm">
+            <div *ngIf="branchForm.get('address')?.errors?.['required']">Address is required.</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-4 mt-4 font-bold w-full">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+        <button (click)="closeModal()" type="button"
+          class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div *ngIf="isMapModalOpen" class="modal-overlay" (click)="closeMapModal()">
+  <div class="modal-content h-fit rounded-xl mx-auto" (click)="$event.stopPropagation()">
+    <app-map-dialog (coordinatesSelected)="setCoordinates($event.longitude, $event.latitude)"
+      (close)="closeMapModal()"></app-map-dialog>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+<form (ngSubmit)="onSubmit()" class="p-4 bg-white border-t-[1px] border-[#CCCCCC]">
+  <div class="flex items-center flex-wrap gap-3">
+    <div *ngFor="let field of filterFields" class="mb-4">
+      <label [for]="field.name" class="block text-sm font-medium text-gray-700">{{ field.label }}</label>
+
+      <!-- Conditionally render input or select -->
+      <ng-container [ngSwitch]="field.type">
+        <!-- For text and date inputs -->
+        <input *ngSwitchCase="'text'" [id]="field.name" [type]="field.type" [(ngModel)]="filters[field.name]"
+          [name]="field.name"
+          class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+
+        <input *ngSwitchCase="'date'" [id]="field.name" [type]="field.type" [(ngModel)]="filters[field.name]"
+          [name]="field.name"
+          class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+
+        <!-- For select dropdown -->
+        <select *ngSwitchCase="'select'" [id]="field.name" [(ngModel)]="filters[field.name]" [name]="field.name"
+          class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          <option disabled value=''>--</option>
+          <option *ngFor="let option of field.options" [value]="option">{{ option }}</option>
+        </select>
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="flex items-center flex-wrap gap-3 text-[20px] font-bold">
+    <button type="submit"
+      class="mt-2 bg-[#F45859] text-white font-bold py-2 px-4 rounded-md hover:bg-[#d14044] w-[144px] h-[48px]">
+      Search
+    </button>
+    <button type="button" (click)="onClear()"
+      class="mt-2 text-[#F45859] bg-white border-[1px] border-solid border-[#F45859] font-bold py-2 px-4 rounded-md w-[144px] h-[48px]">
+      Clear
+    </button>
+  </div>
+</form>

@@ -1,0 +1,53 @@
+<div class="overflow-x-auto min-w-full bg-white border border-gray-300 rounded-b-2xl px-4 py-6">
+  <h3 class="text-[20px] font-semibold">Role & Permissions <span class="text-[#FF3C3C]">(Admin)</span></h3>
+
+  <hr class="border-b-[1px] border-solid border-[#CCCCCC4D] my-3">
+
+  <table class="w-full shadow-[0_4px_4px_0px_#CCCCCC4D]">
+    <thead>
+      <tr>
+        <th class="px-4 py-2 text-left">Page</th>
+        <th class="px-4 py-2 text-center">Create</th>
+        <th class="px-4 py-2 text-center">Update</th>
+        <th class="px-4 py-2 text-center">Delete</th>
+        <th class="px-4 py-2 text-center">View</th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <tr *ngFor="let permission of permissions; let isOdd = odd" [class.odd-bg]="!isOdd">
+        <!-- Page Checkbox -->
+        <td class="px-4 py-4 flex items-center">
+          <input type="checkbox" [(ngModel)]="permission.name" class="mr-2 accent-[#F45859]" />
+          {{ permission.pageName }}
+        </td>
+
+        <!-- Create Permission -->
+        <td class="px-4 py-4 text-center">
+          <input type="checkbox" [(ngModel)]="permission.canCreate" class="accent-[#F45859]" />
+        </td>
+
+        <!-- Update Permission -->
+        <td class="px-4 py-4 text-center">
+          <input type="checkbox" [(ngModel)]="permission.canUpdate" class="accent-[#F45859]" />
+        </td>
+
+        <!-- Delete Permission -->
+        <td class="px-4 py-4 text-center">
+          <input type="checkbox" [(ngModel)]="permission.canDelete" class="accent-[#F45859]" />
+        </td>
+
+        <!-- View Permission -->
+        <td class="px-4 py-4 text-center">
+          <input type="checkbox" [(ngModel)]="permission.canRead" class="accent-[#F45859]" />
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- Submit Button -->
+  <button type="button" (click)="submit()"
+    class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px] mt-12">
+    Save
+  </button>
+</div>

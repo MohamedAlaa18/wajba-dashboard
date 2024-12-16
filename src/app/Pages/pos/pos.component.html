@@ -1,0 +1,357 @@
+<section class="flex justify-center sm:flex-nowrap flex-wrap gap-6 w-full" (click)="toggleSidebar()">
+  <div class="w-full">
+    <form>
+      <div class="bg-white rounded-lg border border-gray-100 flex items-center gap-4">
+        <input type="text" id="search" placeholder="Search by menu item" (input)="searchAction($event)"
+          class="w-full border-none focus:border-transparent focus:ring-transparent sm:text-sm text-gray-900 rounded-lg p-3 outline-none" />
+
+        <button
+          class="mt-1 w-[48px] bg-[#F45859] hover:bg-[#D44E4F] transition rounded-r-lg p-3 text-sm font-bold tracking-wide text-white transition-none sm:mt-0 sm:w-auto sm:shrink-0">
+          <app-icon iconName="search" color="white"></app-icon>
+        </button>
+      </div>
+    </form>
+
+    <!-- Meal items scrollable list -->
+    <div class="overflow-x-auto max-w-screen-md categories-container" *ngIf="categories" (scroll)="onScroll($event)">
+      <div [ngStyle]="{ width: (calculateWidth(categories.length + 1)) + 'px' }">
+        <div class="flex flex-wrap gap-3 my-4"
+          [ngStyle]="{ 'transform': 'translateX(-' + (selectedPageIndex * calculateWidth(4)) + 'px)' }">
+          <!-- 'All' category button -->
+          <button (click)="selectCategory(0)"
+            class="cursor-pointer flex flex-col items-center justify-center text-center rounded-[17.86px] w-[113.12px] h-[113.12px] border-b-[2px] border-solid hover:border-[#F45859] hover:bg-[#F458591F] transition"
+            [class.bg-[#328DE01F]]="selectedCategoryId === undefined"
+            [class.border-[#F45859]]="selectedCategoryId === undefined"
+            [class.bg-white]="selectedCategoryId !== undefined" [class.border-white]="selectedCategoryId !== undefined">
+            <img [src]="" alt="category" class="w-3/4 h-3/4" />
+            <span class="text-[11.91px] font-bold capitalize">All</span>
+          </button>
+
+          <!-- Category buttons -->
+          <button *ngFor="let category of categories;" (click)="selectCategory(category.id)"
+            class="cursor-pointer flex flex-col items-center justify-center text-center rounded-[17.86px] w-[113.12px] h-[113.12px] border-b-[2px] border-solid hover:border-[#F45859] hover:bg-[#F458591F] transition"
+            [class.bg-[#328DE01F]]="selectedCategoryId === category.id"
+            [class.border-[#F45859]]="selectedCategoryId === category.id"
+            [class.bg-white]="selectedCategoryId !== category.id"
+            [class.border-white]="selectedCategoryId !== category.id">
+            <img [src]="category.imageUrl" alt="category" class="w-3/4 h-3/4" />
+            <span class="text-[11.91px] font-bold capitalize">{{ category.name }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination buttons -->
+    <div class="flex justify-center gap-2 w-full mt-4 mb-8">
+      <button *ngFor="let page of [].constructor(pageCount); let i = index" (click)="selectPage(i)"
+        class="w-[15.97px] h-[7.74px] rounded-[4px]" [ngStyle]="{
+        'background-color': selectedPageIndex === i ? '#F45859' : '#F4585945'
+      }"></button>
+    </div>
+
+    <!-- Product list -->
+    <div class="flex overflow-x-auto gap-3 my-4 w-full max-w-screen-md flex-wrap">
+      <div *ngFor="let product of products">
+        <app-product-card [productItem]="product"></app-product-card>
+      </div>
+    </div>
+  </div>
+
+  <!-- Service selection buttons -->
+  <div class="max-w-[446px] w-full bg-white p-6 rounded-2xl flex flex-col gap-6">
+    <div class="flex flex-wrap gap-4 sm:justify-start justify-center">
+      <button *ngFor="let type of orderType" (click)="selectService(type)"
+        class="w-[121px] h-[40px] flex items-center justify-center gap-2 rounded-lg" [ngClass]="{
+        'bg-[#F458591F] border-[1px] border-solid border-[#F45859]': selectedTypeName === type.name,
+        'bg-[#CCCCCC4D]': selectedTypeName !== type.name
+      }">
+        <img [src]="'assets/images/' + type.imageUrl + '.svg'" [alt]="type.name">
+        {{ type.name }}
+      </button>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="w-full">
+      <!-- Conditionally Render Forms Based on Selected Service -->
+
+      <div *ngIf="selectedTypeName === 'POS'">
+        <!-- POS Form -->
+        <div class="mt-4 flex flex-col gap-2">
+          <select formControlName="customer"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            aria-label="Select customer">
+            <option [ngValue]="null" disabled>Select customer</option>
+            <option *ngFor="let customer of customers" [ngValue]="customer.id">{{ customer.fullName }}</option>
+          </select>
+          <div *ngIf="form.get('customer')?.invalid && form.get('customer')?.touched" class="text-[#FF3C3C]">
+            Customer is required.
+          </div>
+
+          <input formControlName="phoneNumber" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Phone number" />
+          <div *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched" class="text-[#FF3C3C]">
+            Phone number is required.
+          </div>
+
+          <input formControlName="tokenNo" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Token no." />
+          <div *ngIf="form.get('tokenNo')?.invalid && form.get('tokenNo')?.touched" class="text-[#FF3C3C]">
+            Token number is required.
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedTypeName === 'Delivery'">
+        <!-- Delivery Form -->
+        <div class="flex flex-col gap-2">
+          <h2 class="mt-4 text-[14px] font-medium">Delivery Info</h2>
+          <input formControlName="buildingName" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Building name" />
+          <div *ngIf="form.get('buildingName')?.invalid && form.get('buildingName')?.touched" class="text-[#FF3C3C]">
+            Building name is required.
+          </div>
+
+          <div class="flex items-center gap-4">
+            <div class="w-full">
+              <input formControlName="apartmentNumber" type="text"
+                class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+                placeholder="Apartment number" />
+              <div *ngIf="form.get('apartmentNumber')?.invalid && form.get('apartmentNumber')?.touched"
+                class="text-[#FF3C3C]">
+                The number is required.
+              </div>
+            </div>
+
+            <div class="w-full">
+              <input formControlName="floor" type="text"
+                class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+                placeholder="Floor" />
+              <div *ngIf="form.get('floor')?.invalid && form.get('floor')?.touched" class="text-[#FF3C3C]">
+                Floor is required.
+              </div>
+            </div>
+          </div>
+
+          <input formControlName="street" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Street" />
+          <div *ngIf="form.get('street')?.invalid && form.get('street')?.touched" class="text-[#FF3C3C]">
+            Street is required.
+          </div>
+
+          <input formControlName="additionalDirections" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Additional directions (optional)" />
+
+          <input formControlName="phoneNumber" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Phone number" />
+          <div *ngIf="form.get('phoneNumber')?.invalid && form.get('phoneNumber')?.touched" class="text-[#FF3C3C]">
+            Phone number is required.
+          </div>
+
+          <input formControlName="addressLabel" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Address label (optional)" />
+        </div>
+      </div>
+
+      <div *ngIf="selectedTypeName === 'Drive thru'">
+        <!-- Drive Thru Form -->
+        <div class="flex flex-col gap-2">
+          <h2 class="my-2 text-[14px] font-medium">Drive Thru Info</h2>
+          <input formControlName="time" type="time"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Time" />
+          <div *ngIf="form.get('time')?.invalid && form.get('time')?.touched" class="text-[#FF3C3C]">
+            Time is required.
+          </div>
+
+          <input formControlName="date" type="date"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Date" />
+          <div *ngIf="form.get('date')?.invalid && form.get('date')?.touched" class="text-[#FF3C3C]">
+            Date is required.
+          </div>
+
+          <select id="branch" formControlName="branch"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="" disabled>branch</option>
+            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+          </select>
+          <div *ngIf="form.get('branch')?.invalid && form.get('branch')?.touched" class="text-[#FF3C3C]">
+            Branch is required.
+          </div>
+
+          <!-- Car Info Fields -->
+          <h2 class="my-2 text-[14px] font-medium">Car Info</h2>
+          <input formControlName="carType" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Car type" />
+          <div *ngIf="form.get('carType')?.invalid && form.get('carType')?.touched" class="text-[#FF3C3C]">
+            Car type is required.
+          </div>
+
+          <input formControlName="carColor" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Car color" />
+          <div *ngIf="form.get('carColor')?.invalid && form.get('carColor')?.touched" class="text-[#FF3C3C]">
+            Car color is required.
+          </div>
+
+          <input formControlName="carNumber" type="text"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Car plate number" />
+          <div *ngIf="form.get('carNumber')?.invalid && form.get('carNumber')?.touched" class="text-[#FF3C3C]">
+            Car plate number is required.
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedTypeName === 'Dine in'">
+        <!-- Dine In Form -->
+        <div class="flex flex-col gap-2">
+          <h2 class="my-2 text-[14px] font-medium">Dine In Info</h2>
+
+          <input formControlName="time" type="time"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Time" />
+          <div *ngIf="form.get('time')?.invalid && form.get('time')?.touched" class="text-[#FF3C3C]">
+            Time is required.
+          </div>
+
+          <input formControlName="date" type="date"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Date" />
+          <div *ngIf="form.get('date')?.invalid && form.get('date')?.touched" class="text-[#FF3C3C]">
+            Date is required.
+          </div>
+
+          <select id="branch" formControlName="branch"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="" disabled>Branch</option>
+            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+          </select>
+          <div *ngIf="form.get('branch')?.invalid && form.get('branch')?.touched" class="text-[#FF3C3C]">
+            Please select a branch.
+          </div>
+
+          <input formControlName="persons" type="number"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Number of persons" min="0" />
+          <div *ngIf="form.get('persons')?.invalid && form.get('persons')?.touched" class="text-[#FF3C3C]">
+            Number of persons is required.
+          </div>
+        </div>
+      </div>
+
+      <div *ngIf="selectedTypeName === 'Pick up'">
+        <!-- Pick Up Form -->
+        <div class="flex flex-col gap-2">
+          <h2 class="my-2 text-[14px] font-medium">Pick Up Info</h2>
+
+          <input formControlName="time" type="time"
+            class="border-[1px] border-solid border-[#CCCCCC4D] rounded-[8px] p-3 w-full outline-none"
+            placeholder="Time" />
+          <div *ngIf="form.get('time')?.invalid && form.get('time')?.touched" class="text-[#FF3C3C]">
+            Time is required.
+          </div>
+
+          <select id="branch" formControlName="branch"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+            <option value="" disabled>Branch</option>
+            <option *ngFor="let branch of branches" [value]="branch.id">{{ branch.name }}</option>
+          </select>
+          <div *ngIf="form.get('branch')?.invalid && form.get('branch')?.touched" class="text-[#FF3C3C]">
+            Please select a branch.
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <div>
+      <div class="bg-[#F4585940] flex items-center justify-between px-4 font-medium h-[50px]">
+        <span class="w-1/3">Item</span>
+        <span class="w-1/3 text-center">Qty</span>
+        <span class="w-1/3 text-right">Price</span>
+      </div>
+      <div *ngIf="cart">
+        <div *ngFor="let item of cart.items;" class="flex items-center justify-between mt-6">
+          <div class="flex items-center gap-3 w-1/3">
+            <button (click)="onRemove(item.cartItemId)"><app-icon iconName="delete" color="#F45859"></app-icon></button>
+            <p class="font-medium">{{item.itemName}}</p>
+          </div>
+          <div class="flex items-center justify-center gap-2 w-1/3">
+            <button *ngIf="item.quantity === 1" (click)="onRemove(item.cartItemId)"><app-icon iconName="smallDelete"
+                color="#F45859"></app-icon></button>
+            <button *ngIf="item.quantity > 1" (click)="decrementQuantity(item)"><app-icon iconName="decrement"
+                color="#F45859"></app-icon></button>
+
+            <p>{{item.quantity}}</p>
+
+            <button (click)="incrementQuantity(item)"><app-icon iconName="increment"
+                color="#F45859"></app-icon></button>
+          </div>
+          <p class="w-1/3 text-right">QAR {{(item.price).toFixed(2)}}</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full flex items-center">
+      <select [(ngModel)]="discountType"
+        class="px-2 border-[1px] border-solid border-[#CCCCCC] rounded-l-lg md:w-[156px] w-[100px] h-[35px] text-[#818181] outline-none">
+        <option [value]="0">Fixed</option>
+        <option [value]="1">Percentage</option>
+      </select>
+
+      <input type="number" [(ngModel)]="discountValue" placeholder="add discount"
+        class="px-2 md:w-[159px] w-full h-[35px] border-[1px] border-solid border-[#CCCCCC] outline-none" min="0" />
+
+      <button type="button" (click)="applyVoucherCode(discountType,discountValue)"
+        class="px-2 bg-[#62BF71] text-white h-[35px] w-[82px] rounded-r-lg">Apply</button>
+    </div>
+
+    <div *ngIf="cart">
+      <h3 for="note" class="text-[14px] font-bold">Payment summary</h3>
+      <div class="flex justify-end border-t border-gray-100">
+        <div class="w-screen max-w-lg space-y-4">
+          <dl class="space-y-0.5 text-sm">
+            <div class="flex justify-between">
+              <dt>Subtotal</dt>
+              <dd>QAR {{cart.subTotal}}</dd>
+            </div>
+
+            <div class="flex justify-between text-[#F45859]">
+              <dt>Discount</dt>
+              <dd>- QAR {{cart.discountAmount }}</dd>
+            </div>
+
+            <div class="flex justify-between">
+              <dt>Service fee</dt>
+              <dd>QAR {{cart.deliveryFee}}</dd>
+            </div>
+
+            <div class="flex justify-between">
+              <dt>Delivery fee</dt>
+              <dd>QAR {{cart.deliveryFee}}</dd>
+            </div>
+
+            <div class="flex justify-between !text-base font-semibold">
+              <dt>Total amount</dt>
+              <dd>QAR {{(cart.totalAmount).toFixed(2)}}</dd>
+            </div>
+          </dl>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex items-center gap-4 mt-4 font-bold w-full">
+      <button type="button"
+        class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+      <button (click)="placeOrder()" type="submit"
+        class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Order</button>
+    </div>
+  </div>
+</section>

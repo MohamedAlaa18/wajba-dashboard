@@ -1,0 +1,75 @@
+<section class="bg-white p-4">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">Theme</span>
+  </div>
+
+  <div class="theme-form-container">
+    <form [formGroup]="themeForm" (ngSubmit)="onSubmit()" class="space-y-4">
+      <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+        <!-- Logo Input -->
+        <div class="w-full md:w-[48%]">
+          <label for="logo" class="font-bold">Logo <span class="text-red-500">*</span></label>
+          <input type="file" id="logo" (change)="onFileSelected($event, 'logo')" accept="image/*"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+            formControlName="logoFile" />
+          <!-- Error Message for Logo -->
+          <div *ngIf="themeForm.get('logoFile')?.invalid && themeForm.get('logoFile')?.touched"
+            class="text-red-500 text-sm mt-1">
+            Please upload a logo.
+          </div>
+          <div class="w-full h-[166.43px] mt-4">
+            <div *ngIf="logoPreview">
+              <img [src]="logoPreview" alt="Logo Preview"
+                class="image-preview max-w-full max-h-48 border border-gray-300 rounded-lg w-full h-[166.43px]" />
+            </div>
+          </div>
+        </div>
+
+        <!-- Browser Tab Icon Input -->
+        <div class="w-full md:w-[48%]">
+          <label for="browserIcon" class="font-bold">Browser Tab Icon <span class="text-red-500">*</span></label>
+          <input type="file" id="browserIcon" (change)="onFileSelected($event, 'browserIcon')" accept=".ico"
+            class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+            formControlName="browserIconFile" />
+          <!-- Error Message for Browser Icon -->
+          <div *ngIf="themeForm.get('browserIconFile')?.invalid && themeForm.get('browserIconFile')?.touched"
+            class="text-red-500 text-sm mt-1">
+            Please upload a browser icon.
+          </div>
+          <div class="w-full h-[166.43px] mt-4">
+            <div *ngIf="browserIconPreview">
+              <img [src]="browserIconPreview" alt="Browser Tab Icon Preview"
+                class="image-preview max-w-full max-h-48 border border-gray-300 rounded-lg w-full h-[166.43px]" />
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer Logo Input -->
+      <div class="w-full">
+        <label for="footerLogo" class="font-bold">Footer Logo <span class="text-red-500">*</span></label>
+        <input type="file" id="footerLogo" (change)="onFileSelected($event, 'footerLogo')" accept="image/*"
+          class="mt-1 block w-full h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none"
+          formControlName="footerLogoFile" />
+        <!-- Error Message for Footer Logo -->
+        <div *ngIf="themeForm.get('footerLogoFile')?.invalid && themeForm.get('footerLogoFile')?.touched"
+          class="text-red-500 text-sm mt-1">
+          Please upload a footer logo.
+        </div>
+        <div class="w-full h-[166.43px] mt-4">
+          <div *ngIf="footerLogoPreview">
+            <img [src]="footerLogoPreview" alt="Footer Logo Preview"
+              class="image-preview max-w-full max-h-48 border border-gray-300 rounded-lg w-full h-[166.43px]" />
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <div class="flex gap-4 mt-4">
+        <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</section>

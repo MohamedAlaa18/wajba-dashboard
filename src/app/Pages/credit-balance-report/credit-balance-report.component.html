@@ -1,0 +1,49 @@
+<section class="flex justify-center w-full h-full my-12">
+  <div class="overflow-x-auto w-full">
+    <div
+      class="flex justify-between items-center w-full rounded-t-[16px] bg-white px-4 py-3 border-b-[1px] border-solid border-[#CCCCCC]">
+      <span class="font-semibold text-[20px]">Sales Reports</span>
+      <div class="flex justify-center items-center gap-4">
+        <!-- Filter Button -->
+        <button (click)="toggleFilterVisibility()"
+          class="flex items-center justify-evenly border-[1px] border-solid border-[#F45859] rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+          <img src="assets/images/filter.svg" alt="filter">
+          Filter
+          <app-icon iconName="arrowDown"></app-icon>
+        </button>
+        <!-- Export Button -->
+        <div class="border-[1px] border-solid border-[#F45859] rounded-lg">
+          <button (click)="toggleMenu()"
+            class="flex items-center justify-evenly rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+            <img src="assets/images/export.svg" alt="export">
+            Export
+            <app-icon iconName="arrowDown"></app-icon>
+          </button>
+          <!-- Dropdown Menu -->
+          <div class="relative">
+            <div *ngIf="isMenuOpen"
+              class="absolute right-0 mt-2 w-[154px] bg-white border-[1px] border-solid border-[#F45859] rounded-lg z-20">
+              <button (click)="exportXLS()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/xls.svg" alt="xls"> XLS
+              </button>
+              <button (click)="print()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/print.svg" alt="print"> Print
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Filter Form -->
+    <div *ngIf="isFilterVisible" class="transition-all duration-300 ease-in-out">
+      <app-filter-form [filters]="filters" [filterFields]="filterFields" (filterSubmit)="applyFilters($event)"
+        (filterClear)="clearFilters()"></app-filter-form>
+    </div>
+
+    <!-- Transactions Table -->
+    <app-table [headers]="headers" [rows]="rows"></app-table>
+  </div>
+</section>

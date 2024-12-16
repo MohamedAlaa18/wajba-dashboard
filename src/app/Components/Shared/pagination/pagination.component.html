@@ -1,0 +1,16 @@
+<div class="flex items-center gap-6 font-medium mx-auto w-fit pt-12" *ngIf="totalPages > 0">
+  Previous
+  <button class="flex items-center gap-3 mx-2" (click)="onPreviousClicked()" [disabled]="pageNumber === 1">
+    <app-icon iconName="previous" color="#1D1B20"></app-icon>
+  </button>
+
+  <button *ngFor="let page of pages" class="page-button" [ngClass]="{'text-[#F45859] font-bold': page === pageNumber}"
+    (click)="onPageClicked(page)">
+    {{ page }}
+  </button>
+
+  <button class="flex items-center gap-3 mx-2" (click)="onNextClicked()" [disabled]="pageNumber === totalPages">
+    <app-icon iconName="next" color="#1D1B20"></app-icon>
+    Next
+  </button>
+</div>

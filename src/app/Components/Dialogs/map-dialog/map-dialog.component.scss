@@ -1,0 +1,30 @@
+.map-container {
+  position: relative;
+}
+
+.spinner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 18px;
+  color: #555;
+}
+
+.search-bar {
+  position: relative;
+  margin-bottom: 10px;
+}
+
+input[type="text"] {
+  padding-left: 32px; /* Space for the icon */
+}
+
+button {
+  cursor: pointer;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}

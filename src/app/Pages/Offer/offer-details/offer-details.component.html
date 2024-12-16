@@ -1,0 +1,136 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Offers', link: '/offers' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<section *ngIf="offer">
+  <!-- Navigation Buttons -->
+  <div class="flex justify-around w-full">
+    <button (click)="activeSection = 'information'" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'information'}">Information</button>
+    <button (click)="activeSection = 'image'" class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'image'}">Image</button>
+    <button *ngIf="offer.items.length != 0" (click)="activeSection = 'items'"
+      class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'items'}">Items</button>
+    <button *ngIf="offer.categories.length != 0" (click)="activeSection = 'categories'"
+      class="w-full h-[48px] text-[#555457] font-semibold"
+      [ngClass]="{'bg-white text-[#F45859]': activeSection === 'categories'}">Categories</button>
+  </div>
+
+  <div class="border-[1px] border-solid border-[#F45859] bg-white">
+    <!-- Information Section -->
+    <div *ngIf="activeSection === 'information' && offer" class="section p-5 mb-5">
+      <div class="info flex flex-col gap-4 w-full">
+        <div class="flex flex-wrap gap-4 items-center justify-between w-3/4">
+          <p class="flex items-center gap-3 min-w-[200px]">
+            <span class="min-w-[100px]">Name</span>
+            <span class="text-[#555457]">{{ offer.name }}</span>
+          </p>
+          <p class="flex items-center gap-3 min-w-[200px]">
+            <span class="min-w-[100px]">Discount</span>
+            <span class="text-[#555457]">{{ (offer.discountPercentage).toFixed(2) }}</span>
+          </p>
+        </div>
+        <div class="flex flex-wrap gap-4 items-center justify-between w-3/4">
+          <p class="flex items-center gap-3 min-w-[200px]">
+            <span class="min-w-[100px]">Start Day</span>
+            <span class="text-[#555457]">{{ offer.startDate }}</span>
+          </p>
+          <p class="flex items-center gap-3 min-w-[200px]">
+            <span class="min-w-[100px]">Status</span>
+            <span class="text-[#50AF60]" [class.text-[#FF3C3C]]='offer.status === 0'>{{ offer.status === 1 ? 'Active'
+              :'Inactive'}}</span>
+          </p>
+        </div>
+        <div class="flex items-center w-2/3 justify-between">
+          <p class="flex items-center gap-3 min-w-[200px]">
+            <span class="min-w-[100px]">End Day</span>
+            <span class="text-[#555457]">{{ offer.endDate }}</span>
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Image Section -->
+    <div *ngIf="activeSection === 'image'" class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <div class="flex items-center gap-4 flex-wrap">
+        <img [src]="offer.imageUrl" alt="Item Image" class="w-[212.92px] h-[205.68px] rounded-[16px]">
+        <label
+          class="bg-[#F45859] hover:bg-[#d14044] transition w-[184px] h-[47px] rounded-[8px] text-white flex items-center justify-center">
+          Update Image
+          <input type="file" id="image" (change)="onFileSelect($event)" class="hidden">
+        </label>
+      </div>
+    </div>
+
+    <!-- Item Section -->
+    <div *ngIf="activeSection === 'items' && offer.items.length != 0"
+      class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+        <thead class="ltr:text-left rtl:text-right">
+          <tr>
+            <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Name</th>
+            <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Price</th>
+            <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let item of offer.items; let isOdd = odd" [class.odd-bg]="!isOdd">
+            <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ item.name }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ item.price }}</td>
+            <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+              <!-- Delete Button with Tooltip -->
+              <div class="group">
+                <button (click)="openConfirmDeleteItemModal(item.id)"
+                  class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center">
+                  <img src="assets/images/delete.svg" alt="delete">
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div *ngIf="activeSection === 'categories' && offer.categories.length != 0"
+      class="section p-5 border border-gray-300 rounded-lg mb-5">
+      <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+        <thead class="ltr:text-left rtl:text-right">
+          <tr>
+            <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Name</th>
+            <!-- <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Price</th> -->
+            <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+          </tr>
+        </thead>
+
+        <tbody class="divide-y divide-gray-200">
+          <tr *ngFor="let category of offer.categories; let isOdd = odd" [class.odd-bg]="!isOdd">
+            <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ category.name }}</td>
+            <!-- <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ category.price }}</td> -->
+
+            <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+              <!-- Delete Button with Tooltip -->
+              <div class="group">
+                <button (click)="openConfirmDeleteCategoryModal(category.id)"
+                  class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center">
+                  <img src="assets/images/delete.svg" alt="delete">
+                </button>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+
+<app-confirm-delete-dialog *ngIf="isConfirmDeleteCategoryModalOpen" [id]="categoryToDeleteId" [name]="'category'"
+  (confirmDelete)="removeCategories()" (cancelDelete)="isConfirmDeleteCategoryModalOpen = false">
+</app-confirm-delete-dialog>
+
+<app-confirm-delete-dialog *ngIf="isConfirmDeleteItemModalOpen" [id]="itemToDeleteId" [name]="'item'"
+  (confirmDelete)="removeItems()" (cancelDelete)="isConfirmDeleteCategoryModalOpen = false">
+</app-confirm-delete-dialog>

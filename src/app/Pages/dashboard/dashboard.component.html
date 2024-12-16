@@ -1,0 +1,140 @@
+<section class="max-w-5xl">
+  <h3 class="text-[24px] font-semibold text-[#F45859] leading-tight">Good Morning!</h3>
+  <p class="text-[20px] leading-tight">Mohamed ahmed</p>
+
+  <h3 class="text-[24px] font-semibold mt-12 mb-4">Overview</h3>
+  <div class="flex flex-wrap items-center gap-4 justify-between">
+    <div *ngFor="let card of dashboardOverviewCards" class="flex items-center gap-4 px-4 rounded-xl w-[240px] h-[80px]"
+      [ngStyle]="{'background-color': card.bgColor}">
+      <div class="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-full">
+        <app-icon [iconName]="card.iconName" [color]="card.bgColor"></app-icon>
+      </div>
+      <div class="text-[14px] text-white">
+        <p class="font-medium">{{ card.label }}</p>
+        <p class="font-bold">{{ card.value }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 flex items-center justify-between w-full">
+    <h3 class="text-[24px] font-semibold mt-10 mb-4">Order Statistics</h3>
+
+    <div class="bg-white h-fit w-fit rounded-lg">
+      <input type="date" id="date"
+        class="block w-[279px] h-[44px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#FF7A7B] outline-none custom-date-input">
+    </div>
+  </div>
+
+  <div class="flex flex-wrap items-center gap-4 justify-between">
+    <div *ngFor="let card of dashboardOrderStatisticsCards"
+      class="flex items-center gap-4 px-4 rounded-xl w-[240px] h-[80px] bg-white">
+      <div class="bg-white w-[48px] h-[48px] flex justify-center items-center rounded-full"
+        [ngStyle]="{'background-color': card.bgColor}">
+        <app-icon [iconName]="card.iconName" [color]="card.iconColor"></app-icon>
+      </div>
+      <div class="text-[14px]">
+        <p class="font-medium">{{ card.label }}</p>
+        <p class="font-bold">{{ card.value }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="mt-12 flex flex-wrap gap-6 justify-between">
+    <div class="w-[490.4px] h-fit bg-white rounded-lg">
+      <div class="flex items-center justify-between p-4">
+        <p class="text-[#616161] text-[20px] font-medium">Sales summery</p>
+
+        <input type="date" id="date"
+          class="mt-1 block w-[279px] h-[44px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#FF7A7B] bg-white outline-none custom-date-input">
+      </div>
+
+      <hr class="border-b-[1px] border-[#C7C7C7] border-solid">
+
+      <div class="flex gap-6 p-4 pb-0">
+        <div>
+          <div class="flex gap-3">
+            <app-icon iconName="barChar" color="#555457"></app-icon>
+            <p class="font-semibold">QAR 0.00</p>
+          </div>
+          <p class="text-[#555457]">Total sales</p>
+        </div>
+
+        <div>
+          <div class="flex gap-3">
+            <app-icon iconName="barChar" color="#555457"></app-icon>
+            <p class="font-semibold">QAR 0.00</p>
+          </div>
+          <p class="text-[#555457]">AVG. Sales per day</p>
+        </div>
+      </div>
+
+      <app-chart-lines color="#F45859" class="p-4 pt-2"></app-chart-lines>
+    </div>
+
+    <div class="w-[490.4px] h-fit bg-white rounded-lg">
+      <div class="flex items-center justify-between p-4">
+        <p class="text-[#616161] text-[20px] font-medium">Order summery</p>
+
+        <input type="date" id="date"
+          class="mt-1 block w-[279px] h-[44px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#FF7A7B] bg-white outline-none custom-date-input">
+      </div>
+
+      <hr class="border-b-[1px] border-[#C7C7C7] border-solid">
+
+      <app-chart-circles class="w-1/2"></app-chart-circles>
+    </div>
+  </div>
+
+  <div class="mt-12 flex gap-6 justify-between">
+    <div class="w-[490.4px] h-fit bg-white rounded-lg">
+      <div class="flex items-center justify-between p-4">
+        <p class="text-[#616161] text-[20px] font-medium">Customer stats</p>
+
+        <input type="date" id="date"
+          class="mt-1 block w-[279px] h-[44px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#FF7A7B] bg-white outline-none custom-date-input">
+      </div>
+
+      <hr class="border-b-[1px] border-[#C7C7C7] border-solid">
+
+      <app-chart-lines color="#328DE0" class="p-4"></app-chart-lines>
+    </div>
+
+    <div>
+      <div class="w-[490.4px] bg-white rounded-lg">
+        <p class="text-[#616161] text-[20px] font-medium p-4">Most Popular Items</p>
+        <hr class="border-b-[1px] border-[#C7C7C7] border-solid">
+
+        <div class="flex items-center gap-6 p-4 pb-8">
+          <div *ngFor="let item of popularItems"
+            class="flex items-center gap-3 border-[1px] border-[#C4C4C4] border-solid w-[221px] rounded-xl">
+            <img [src]="item.imageUrl" [alt]="item.name" class="w-[80px] rounded-xl">
+
+            <div class="text-[14px] w-full leading-relaxed">
+              <p class="font-bold">{{ item.name }}</p>
+              <p class="text-[#F45859]">{{ item.category }}</p>
+              <p class="font-bold">{{ item.price }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="w-[490.4px] bg-white rounded-lg mt-6">
+        <p class="text-[#616161] text-[20px] font-medium p-4">Featured Items</p>
+        <hr class="border-b-[1px] border-[#C7C7C7] border-solid">
+
+        <div class="flex items-center gap-6 p-4 pb-8">
+          <div *ngFor="let item of featuredItems"
+            class="flex flex-col items-center gap-3 border-[1px] border-[#C4C4C4] border-solid w-[135px] rounded-xl pb-2">
+            <img [src]="item.imageUrl" [alt]="item.name" class="w-[135px] h-[94.93px] rounded-xl">
+
+            <div class="text-[14px] w-fit mx-auto leading-relaxed">
+              <p class="font-bold">{{ item.name }}</p>
+              <p class="text-[#F45859]">{{ item.category }}</p>
+              <p class="font-bold">{{ item.price }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

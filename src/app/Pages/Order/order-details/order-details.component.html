@@ -1,0 +1,171 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Pos Order', link: '/posOrders' },
+  { name: 'View', link: '' },
+]"></app-breadcrumb>
+
+<section>
+  <div class="flex items-center justify-between gap-4 bg-white rounded-xl shadow-[0px_4px_16px_0px_#CCCCCC66] p-6">
+    <div class="flex justify-center gap-8">
+      <div class="flex flex-col gap-2">
+        <p class="font-medium text-[20px]">Order ID: #1608242</p>
+        <p>02:43 PM, 16-08-2024</p>
+        <p><span class="#555457">Payment Type:</span> Cash</p>
+        <p><span class="#555457">Order Type:</span> Dine in</p>
+        <p><span class="#555457">Preparing Time:</span> 03:30</p>
+      </div>
+      <div class="flex items-center gap-4 mb-auto">
+        <p class="text-[#50AF60]">Paid</p>
+        <p class="text-[#CE7E34]">Pending</p>
+      </div>
+    </div>
+    <div class="flex justify-center items-end gap-4 mt-auto">
+      <div class="border-[1px] border-solid border-[#F45859] rounded-lg">
+        <button (click)="openModal('reject')"
+          class="flex items-center justify-evenly rounded-[8px] w-[155px] h-[42px] text-[#F45859] font-bold text-[20px]">
+          Reject
+        </button>
+      </div>
+      <div>
+        <button (click)="openModal('accept')"
+          class="flex items-center justify-evenly rounded-[8px] w-[140px] h-[42px] text-white bg-[#62BF71] font-bold text-[20px]">
+          Accept
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <div class="flex justify-center gap-6 my-6">
+    <div class="flex flex-col items-center gap-6 w-full">
+      <div class="bg-white rounded-lg py-6 w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6">Order Details</p>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+        <div class="flex items-center gap-3 px-6">
+          <div class="relative w-fit">
+            <img src="assets/images/burger-with-bg-black.jpg" alt="burger-with-bg-black" class="rounded-xl w-[80px]">
+            <p
+              class="flex items-center justify-center w-[28px] h-[28px] bg-black border-[2px] border-solid border-white text-white rounded-full absolute bottom-1 -left-3">
+              1</p>
+          </div>
+          <div class="text-[14px] leading-relaxed">
+            <p class="font-bold">Cheese Burger</p>
+            <p class="text-[#F45859]">Burger</p>
+            <p class="font-bold">QAR 5.00</p>
+          </div>
+        </div>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+        <div class="flex items-center gap-3 px-6">
+          <div class="relative w-fit">
+            <img src="assets/images/burger-with-bg-black.jpg" alt="burger-with-bg-black" class="rounded-xl w-[80px]">
+            <p
+              class="flex items-center justify-center w-[28px] h-[28px] bg-black border-[2px] border-solid border-white text-white rounded-full absolute bottom-1 -left-3">
+              1</p>
+          </div>
+          <div class="text-[14px] leading-relaxed">
+            <p class="font-bold">Cheese Burger</p>
+            <p class="text-[#F45859]">Burger</p>
+            <p class="font-bold">QAR 5.00</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="bg-white rounded-lg py-6 w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6">Note</p>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+        <p class="text-[#616161] text-[20px] px-6">
+          Accusantium ea non reiciendis nisi. Qui aperiam dolores ipsam pariatur aperiam omnis est.
+        </p>
+      </div>
+    </div>
+
+    <div class="flex flex-col items-center gap-6 w-full">
+      <div class="bg-white rounded-lg py-6 leading-loose w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6 flex justify-between">
+          <span>Subtotal</span>
+          <span>100.00</span>
+        </p>
+        <p class="text-[#616161] text-[20px] px-6 flex justify-between">
+          <span>Discount</span>
+          <span>00.00</span>
+        </p>
+        <hr class="border-b-[1px] border-dashed border-[#C7C7C7] my-2" />
+        <p class="text-[#616161] text-[20px] font-bold px-6 flex justify-between">
+          <span>Total</span>
+          <span>QAR 100.00</span>
+        </p>
+      </div>
+
+      <div class="bg-white rounded-lg py-6 font-medium w-full h-fit">
+        <p class="text-[#616161] text-[20px] px-6">Table #2 Information</p>
+        <hr class="border-b-[1px] border-solid border-[#C7C7C7] my-2" />
+        <div class="leading-loose">
+          <div class="text-[20px] font-medium flex items-center px-2">
+            <img src="assets/images/user.svg" alt="user">
+            <p>Mohamed alaa</p>
+          </div>
+          <div class="flex items-center px-6 gap-3">
+            <app-icon iconName="time" color="#555457"></app-icon>
+            <p>12 May 26 2025 01:22</p>
+          </div>
+          <div class="flex items-center px-6 gap-3">
+            <app-icon iconName="tables" color="#555457"></app-icon>
+            <p>Table #2</p>
+          </div>
+          <div class="flex items-center px-6 gap-3">
+            <app-icon iconName="delivery" color="#555457"></app-icon>
+            <p>4 People</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Structure -->
+  <!-- Modal Structure -->
+  <div class="modal" *ngIf="isModalOpen" (click)="closeModal()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <span class="close" (click)="closeModal()">&times;</span>
+      <ng-container *ngIf="currentModal === 'reject'">
+        <div
+          class="flex justify-between items-center w-full border-b-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <h2 class="text-center text-2xl font-bold mb-4">Reason</h2>
+          <button (click)="closeModal()">
+            <app-icon iconName="close" color="#F45859"></app-icon>
+          </button>
+        </div>
+
+        <div>
+          <label for="reason" class="block mt-4">Reason</label>
+          <input type="text" id="reason" formControlName="name"
+            class="mt-1 block w-[499px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        </div>
+
+        <div class="flex items-center gap-4 mt-4 font-bold w-full">
+          <button type="submit"
+            class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Save</button>
+          <button (click)="closeModal()" type="button"
+            class="text-[#F45859] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#F45859]">Cancel</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="currentModal === 'accept'">
+        <div class="flex flex-col justify-center items-center gap-6 w-[477px]">
+          <app-icon iconName="acceptWarning" color="#3859AD"></app-icon>
+
+          <div class="flex flex-col justify-center items-center gap-2">
+            <h3 class="text-[20px] font-bold">Are You Sure?</h3>
+            <p class="text-[18px] text-center">You will not be able to cancel the order when you accept it</p>
+          </div>
+
+          <div class="flex items-center justify-center gap-4 mt-4 font-bold w-full">
+            <button (click)="closeModal()" type="button"
+              class="text-[#3859AD] px-4 py-2 w-[177px] h-[48px] rounded-[24px] border-[1px] border-solid border-[#3859AD]">No,
+              Cancel</button>
+            <button type="submit"
+              class="bg-[#3859AD] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">Yes,Accept</button>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+</section>

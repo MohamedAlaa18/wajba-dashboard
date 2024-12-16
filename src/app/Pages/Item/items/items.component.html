@@ -1,0 +1,200 @@
+<app-breadcrumb [breadcrumbs]="[
+  { name: 'Dashboard', link: '/' },
+  { name: 'Items', link: '/items' },
+]"></app-breadcrumb>
+
+<section class="flex justify-center w-full overflow-x-auto bg-white">
+  <div class="w-full">
+    <div
+      class="flex justify-between items-center gap-4 min-w-[481px] rounded-t-[16px] px-4 py-3 border-b-[1px] border-solid border-[#CCCCCC]">
+      <span class="font-semibold text-[20px]">Items</span>
+
+      <div class="flex justify-center items-center gap-4">
+        <!-- Filter Button -->
+        <button (click)="toggleFilterVisibility()"
+          class="flex items-center justify-evenly border-[1px] border-solid border-[#F45859] rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+          <img src="assets/images/filter.svg" alt="filter">
+          Filter
+          <app-icon iconName="arrowDown"></app-icon>
+        </button>
+
+        <!-- Export Button -->
+        <!-- Export Button with Dropdown Menu -->
+        <div class="border-[1px] border-solid border-[#F45859] rounded-lg">
+          <button (click)="toggleMenu($event)"
+            class="flex items-center justify-evenly rounded-[8px] w-[154px] h-[48px] text-[#F45859] font-bold text-[20px]">
+            <img src="assets/images/export.svg" alt="export">
+            Export
+            <app-icon iconName="arrowDown"></app-icon>
+          </button>
+
+          <!-- Dropdown Menu -->
+          <div class="relative" #menuDropdown>
+            <div *ngIf="isMenuOpen"
+              class="absolute right-0 mt-2 w-[154px] bg-white border-[1px] border-solid border-[#F45859] rounded-lg z-20">
+              <button (click)="exportXLS()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/xls.svg" alt="xls"> XLS
+              </button>
+              <button (click)="print()"
+                class="flex items-center justify-center gap-3 w-full text-left px-4 py-2 hover:bg-[#F458591F]">
+                <img src="assets/images/print.svg" alt="print"> Print
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Add Item Button -->
+        <button (click)="openModal('add',null)"
+          class="flex items-center justify-evenly bg-[#F45859] hover:bg-[#d14044] rounded-[8px] w-[154px] h-[48px] text-white font-bold text-[20px]">
+          <img src="assets/images/add-item.svg" alt="add-item"> Add Item
+        </button>
+      </div>
+    </div>
+
+    <!-- Filter Form (Accordion) -->
+    <div *ngIf="isFilterVisible" class="transition-all duration-300 ease-in-out">
+      <form (ngSubmit)="applyFilters()" class="p-4 border-t-[1px] border-[#CCCCCC]">
+        <div class="flex items-center flex-wrap gap-3">
+          <!-- Name Input -->
+          <div class="mb-4">
+            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+            <input type="text" id="name" [(ngModel)]="filters.name" name="name"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          </div>
+
+          <!-- Price Range Input -->
+          <div class="mb-4">
+            <label for="price" class="block text-sm font-medium text-gray-700">Price Range</label>
+            <input type="text" id="price" [(ngModel)]="filters.price" name="price"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none">
+          </div>
+
+          <!-- Category Selection -->
+          <div class="mb-4">
+            <label for="category" class="block text-sm font-medium text-gray-700">Category</label>
+            <select id="category" [(ngModel)]="filters.categoryId" name="category"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none focus:border-[#F45859]">
+              <option *ngFor="let category of categories" [value]="category.id">{{ category.name }}</option>
+            </select>
+          </div>
+
+          <!-- Tax Selection -->
+          <div class="mb-4">
+            <label for="tax" class="block text-sm font-medium text-gray-700">Tax</label>
+            <select id="tax" [(ngModel)]="filters.tax" name="tax"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none focus:border-[#F45859]">
+              <option *ngFor="let tax of taxes" [value]="tax.id">{{ tax.name }}</option>
+            </select>
+          </div>
+
+          <!-- Item Type Selection -->
+          <div class="mb-4">
+            <label for="itemType" class="block text-sm font-medium text-gray-700">Item Type</label>
+            <select id="itemType" [(ngModel)]="filters.itemType" name="itemType"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none focus:border-[#F45859]">
+              <option *ngFor="let type of itemTypes" [value]="type">{{ type }}</option>
+            </select>
+          </div>
+
+          <!-- Is Featured Selection -->
+          <div class="mb-4">
+            <label for="isFeatured" class="block text-sm font-medium text-gray-700">Is Featured</label>
+            <select id="isFeatured" [(ngModel)]="filters.isFeatured" name="isFeatured"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none focus:border-[#F45859]">
+              <option *ngFor="let feature of features" [value]="feature">{{ feature }}</option>
+            </select>
+          </div>
+
+          <!-- Status Selection -->
+          <div class="mb-4">
+            <label for="status" class="block text-sm font-medium text-gray-700">Status</label>
+            <select id="status" [(ngModel)]="filters.isActive" name="status"
+              class="mt-1 block px-3 py-2 border-gray-300 rounded-lg w-[240px] h-[40px] border-[1px] border-solid border-[#CCCCCC4D] focus:outline-none focus:border-[#F45859]">
+              <option *ngFor="let status of statuses" [value]="status">{{ status }}</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="flex items-center flex-wrap gap-3 text-[20px] font-bold">
+          <!-- Apply Filter Button -->
+          <button type="submit"
+            class="mt-2 bg-[#F45859] text-white font-bold py-2 px-4 rounded-md hover:bg-[#d14044] w-[144px] h-[48px]">
+            Search
+          </button>
+          <button (click)="clearFilters()" type="button"
+            class="mt-2 text-[#F45859] bg-white border-[1px] border-solid border-[#F45859] font-bold py-2 px-4 rounded-md w-[144px] h-[48px]">
+            Clear
+          </button>
+        </div>
+      </form>
+    </div>
+
+    <table class="min-w-full divide-y-2 divide-gray-200 bg-white text-sm">
+      <!-- <thead class="ltr:text-left rtl:text-right"> -->
+      <thead class="text-left">
+        <tr>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Name</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Category</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Price</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Status</th>
+          <th class="whitespace-nowrap px-4 py-5 font-medium text-[#555457]">Action</th>
+        </tr>
+      </thead>
+
+      <tbody class="divide-y divide-gray-200">
+        <tr *ngFor="let item of items ; let isOdd = odd" [class.odd-bg]="!isOdd">
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ item.name }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ item.categoryName }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457]">{{ item.price }}</td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#50AF60]" [class.text-[#FF3C3C]]='!item.isActive'>
+            {{ item.isActive ? 'Active' :'Inactive'}}
+          </td>
+          <td class="whitespace-nowrap px-4 py-2 text-[#555457] flex items-center gap-4">
+            <!-- Edit Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">Edit</span>
+              </div>
+              <button (click)="openModal('edit',item)"
+                class="bg-[#D7ECFF] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/edit.svg" alt="edit">
+              </button>
+            </div>
+
+            <!-- Delete Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">Delete</span>
+              </div>
+              <button (click)="openConfirmDeleteModal(item.id)"
+                class="bg-[#FEEEEE] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/delete.svg" alt="delete">
+              </button>
+            </div>
+
+            <!-- View Button with Tooltip -->
+            <div class="group">
+              <div class="relative">
+                <span class="tooltip-text group-hover:opacity-100">View</span>
+              </div>
+              <button [routerLink]="['/item', item.id]"
+                class="bg-[#E4FFE9] w-[32px] h-[32px] flex justify-center items-center">
+                <img src="assets/images/view.svg" alt="view">
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<app-pagination [pageNumber]="currentPage" [totalPages]="totalPages"
+  (pageChange)="onPageChange($event)"></app-pagination>
+
+<app-item-dialog *ngIf="isModalOpen" (close)="isModalOpen = false" [item]="selectedItem"></app-item-dialog>
+
+<app-confirm-delete-dialog *ngIf="isConfirmDeleteModalOpen" [id]="ItemToDeleteId" [name]="'item'"
+  (confirmDelete)="deleteItem()" (cancelDelete)="isConfirmDeleteModalOpen = false">
+</app-confirm-delete-dialog>

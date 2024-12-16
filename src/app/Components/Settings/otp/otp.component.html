@@ -1,0 +1,56 @@
+<section class="bg-white p-4">
+  <div class="border-b-[1px] border-solid border-[#CCCCCC4D] mb-4 pb-2">
+    <span class="font-semibold text-[20px]">OTP</span>
+  </div>
+
+  <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="company-form-container space-y-4">
+    <div class="flex items-center gap-4 justify-between w-full flex-wrap md:flex-nowrap">
+      <!-- Order Type (Radio buttons) -->
+      <div>
+        <label class="font-semibold">Order Type <span class="text-[#FF3C3C]">*</span></label>
+        <select formControlName="orderType"
+          class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <option value="" disabled selected>--</option>
+          <option *ngFor="let type of orderTypes" [value]="type.value">{{ type.label }}</option>
+        </select>
+        <div *ngIf="otpForm.get('orderType')?.invalid && otpForm.get('orderType')?.touched" class="text-[#FF3C3C]">
+          Type is required.
+        </div>
+      </div>
+
+      <!-- OTP Length (Dropdown) -->
+      <div>
+        <label class="font-semibold">OTP Length <span class="text-[#FF3C3C]">*</span></label>
+        <select formControlName="otpLength"
+          class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+          <option value="" disabled selected>--</option>
+          <option *ngFor="let length of otpLengths" [value]="length">{{ length }}</option>
+        </select>
+        <div *ngIf="otpForm.get('otpLength')?.invalid && otpForm.get('otpLength')?.touched" class="text-[#FF3C3C]">
+          OTP Length is required.
+        </div>
+      </div>
+    </div>
+
+    <!-- OTP Expire Time (Dropdown) -->
+    <div>
+      <label class="font-semibold">OTP Expire Time <span class="text-[#FF3C3C]">*</span></label>
+      <select formControlName="otpExpireTime"
+        class="mt-1 block w-full md:w-[348px] h-[40px] px-3 py-2 rounded-lg border-[1px] border-solid border-[#CCCCCC4D] outline-none">
+        <option value="" disabled selected>--</option>
+        <option *ngFor="let time of otpExpireTimes" [value]="time">{{ time }}</option>
+      </select>
+      <div *ngIf="otpForm.get('otpExpireTime')?.invalid && otpForm.get('otpExpireTime')?.touched"
+        class="text-[#FF3C3C]">
+        Expire Time is required.
+      </div>
+    </div>
+
+    <!-- Submit Button -->
+    <div>
+      <button type="submit" class="bg-[#F45859] text-white px-4 py-2 w-[177px] h-[48px] rounded-[24px]">
+        Save
+      </button>
+    </div>
+  </form>
+</section>

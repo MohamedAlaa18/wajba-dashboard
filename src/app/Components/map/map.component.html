@@ -1,0 +1,19 @@
+<form [formGroup]="mapForm">
+  <div class="map-container">
+    <google-map [center]="center" [zoom]="zoom" #map height="150.85px" width="100%"></google-map>
+
+    <div class="map-controls">
+      <button (click)="detectLocation()">
+        <img src="assets/images/location.svg" alt="location.svg">
+      </button>
+    </div>
+
+    <input id="selected-location" formControlName="location" placeholder="Select location"
+      class="text-[#616161] text-[24px] w-full outline-none border-t-0 border-[1px] border-solid border-[#B3B3B3] rounded-b-2xl h-[60px] px-2"
+      readonly />
+
+    <div *ngIf="mapForm.get('location')?.invalid && mapForm.get('location')?.touched" class="text-[#F45859]">
+      Location is required
+    </div>
+  </div>
+</form>
